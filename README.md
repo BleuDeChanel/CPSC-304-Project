@@ -10,12 +10,14 @@ Once you pull the starter file,
 Run local server with:
 python3 manage.py runserver
 
-To view models go to:
-http://127.0.0.1:8000/admin/ in your browser
-Use the login Mark provided.
+# To view models using admin tool:
+1) Start local sever
+2) http://127.0.0.1:8000/admin/ in your browser
+3) Use the login Mark provided.
 
-Apply database changes with:
+# Apply database changes with:
 python3 manage.py makemigrations
+
 python3 manage.py migrate
 
 
