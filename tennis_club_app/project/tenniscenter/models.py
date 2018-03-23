@@ -104,8 +104,8 @@ class CustomerReservesCourt(models.Model):
     name = models.CharField(max_length=50)
     courtnumber = models.IntegerField(primary_key=True)
     date = models.DateField()
-    starttime = models.TextField()  # This field type is a guess.
-    endtime = models.TextField()  # This field type is a guess.
+    starttime = models.DateField(blank=True, null=True)
+    endtime = models.DateField(blank=True, null=True)
     officesin = models.ForeignKey('OfficeEmployees', models.DO_NOTHING, db_column='officesin')
 
     class Meta:
@@ -206,8 +206,8 @@ class PrivateCourseCourtReservation(models.Model):
     privatetitle = models.CharField(max_length=20)
     courtnumber = models.IntegerField(primary_key=True)
     date = models.DateField()
-    starttime = models.TextField()  # This field type is a guess.
-    endtime = models.TextField()  # This field type is a guess.
+    starttime = models.DateField(blank=True, null=True)
+    endtime = models.DateField(blank=True, null=True) 
     officesin = models.ForeignKey(OfficeEmployees, models.DO_NOTHING, db_column='officesin')
 
     class Meta:
@@ -231,8 +231,8 @@ class PrivateTaught(models.Model):
 class ProgramCourtReservation(models.Model):
     courtnumber = models.IntegerField(primary_key=True)
     date = models.DateField()
-    starttime = models.TimeField()
-    endtime = models.TextField()  # This field type is a guess.
+    starttime = models.DateField(blank=True, null=True)
+    endtime = models.DateField(blank=True, null=True)
     officesin = models.ForeignKey(OfficeEmployees, models.DO_NOTHING, db_column='officesin')
     programtitle = models.CharField(max_length=20)
 
