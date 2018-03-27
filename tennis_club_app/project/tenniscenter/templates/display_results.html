@@ -15,8 +15,8 @@
 
     {% for res in result %}
     <li>
-      {% for i in tuple_length %}
-        {{ res.i }}
+      {% for item in res %}
+        {{ item }}
       {% endfor %}
     </li>
     {% endfor %}
