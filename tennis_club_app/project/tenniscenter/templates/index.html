@@ -50,4 +50,13 @@
     <input type="submit" value="Submit"  />
 	</form>
 
+	<h3>Nested Aggregation Query</h3>
+	<form action="/tenniscenter/nestedaggregation/" method="post">
+    {% csrf_token %}
+    <table class="form">
+    {{ nested_aggregation_query.as_table }}
+    </table>
+    <input type="submit" value="Submit"  />
+	</form>
+
 {% endblock %}
