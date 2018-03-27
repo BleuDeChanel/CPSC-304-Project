@@ -15,6 +15,9 @@ python3 manage.py runserver
 2) http://127.0.0.1:8000/admin/ in your browser
 3) Use the login Mark provided.
 
+User : cpsc304admin
+Pass : DBsAreEasy
+
 # Apply database changes with:
 python3 manage.py makemigrations
 

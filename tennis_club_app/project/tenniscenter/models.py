@@ -173,9 +173,9 @@ class DjangoSession(models.Model):
 
 class Instructors(models.Model):
     inssin = models.CharField(primary_key=True, max_length=9)
-    phonenumber = models.IntegerField(blank=True, null=True)
-    name = models.CharField(max_length=12, blank=True, null=True)
-    email = models.CharField(max_length=20, blank=True, null=True)
+    phonenumber = models.CharField(max_length=12, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -230,7 +230,7 @@ class PrivateTaught(models.Model):
 
 class ProgramCourtReservation(models.Model):
     courtnumber = models.IntegerField(primary_key=True)
-    date = models.DateField()
+    date = models.DateTimeField()
     starttime = models.DateField(blank=True, null=True)
     endtime = models.DateField(blank=True, null=True)
     officesin = models.ForeignKey(OfficeEmployees, models.DO_NOTHING, db_column='officesin')
