@@ -25,6 +25,7 @@ from django.urls import include
 
 urlpatterns += [
     path('tenniscenter/', include('tenniscenter.urls')),
+    path('selection/', include('tenniscenter.urls')),
 ]
 
 #Add URL maps to redirect the base URL to our application

@@ -9,9 +9,15 @@
 
   <p>The tennis center has the following record counts:</p>
   <ul>
-    <li><strong>Customers:</strong> {{ num_customers }}</li>
+    <!-- <li><strong>Customers:</strong> {{ num_customers }}</li>
     <li><strong>Instructors:</strong> {{ num_instructors }}</li>
-    <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li>
+    <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li> -->
   </ul>
+
+	<form action="/selection/" method="post">
+    {% csrf_token %}
+    {{ selection_form }}
+    <input type="submit" value="Submit" />
+	</form>
 
 {% endblock %}
