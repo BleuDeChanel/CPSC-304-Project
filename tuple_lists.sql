@@ -178,30 +178,15 @@ VALUES ('Master Lesson 2', 8999.9, '2018/08/20', '2018/09/20', '666666666');
 INSERT INTO Private_taught(privateTitle,private_fee,startDate,endDate,insSIN)
 VALUES ('Master Lesson 3', 10000, '2018/10/20', '2018/11/20', '666666666');
 
----------------------- aboves are inserted
 
--- phoneNumber char(12) not null,
---   name char(50) not null,
---   courtNumber int not null, 
---   date date not null,
---   startTime char[5] not null,
---   endTime char[5] not null,
---   officeSIN char(9) NOT NULL,
-
-
--- 778-873-1165	Jin Min Lee	1	2018/04/30	11:00	오후 12:30:00	111111111
--- 778-886-5715	Mark Pawlowski	2	2018/05/02	1:00	2:00	222222222
--- 604-872-5815	Peyman Bateni	3	2018/06/03	5:00	6:00	333333333
--- 604-883-5678	Qiao Zhu	4	2018/05/05	6:00	7:00	444444444
--- 778-886-2413	Nadal Rafael	5	2018/07/01	9:00	11:30	555555555
 
 CREATE TABLE Customer_reserves_court (
   phoneNumber char(12) not null,
   name char(50) not null,
   courtNumber int not null, 
   date date not null,
-  startTime char[5] not null,
-  endTime char[5] not null,
+  startTime time not null,
+  endTime time not null,
   officeSIN char(9) NOT NULL,
   PRIMARY KEY (courtNumber, date, startTime),
   FOREIGN KEY (officeSIN) REFERENCES Office_employees,
@@ -211,3 +196,110 @@ CREATE TABLE Customer_reserves_court (
 
 INSERT INTO Customer_reserves_court(phoneNumber, name, courtNumber, date, startTime, endTime, officeSIN)
 VALUES ('778-873-1165', 'Jin Min Lee', 1, '2018/04/30', '11:00', '12:30', '111111111');
+
+INSERT INTO Customer_reserves_court(phoneNumber, name, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('778-886-5715', 'Mark Pawlowski', 2, '2018/05/02', '13:00', '14:00', '222222222');
+
+INSERT INTO Customer_reserves_court(phoneNumber, name, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('604-872-5815', 'Peyman Bateni', 3, '2018/06/03', '16:00', '17:00', '333333333');
+
+INSERT INTO Customer_reserves_court(phoneNumber, name, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('604-883-5678', 'Qiao Zhu', 4, '2018/05/05', '16:00', '17:00', '444444444');
+
+INSERT INTO Customer_reserves_court(phoneNumber, name, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('778-886-2413', 'Nadal Rafael',5,'2018/07/01','9:00','11:30','555555555');
+
+
+
+CREATE TABLE Private_course_court_reservation (
+ privateTitle char(20) not null, 
+ courtNumber int not null,
+ date date not null,
+ startTime time not null,
+ endTime time not null,
+ officeSIN char(9) not null,
+
+ PRIMARY KEY (courtNumber, date, startTime),
+ FOREIGN KEY (privateTitle) REFERENCES Private_taught,
+ FOREIGN KEY (officeSIN) REFERENCES Office_employees ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+INSERT INTO Private_course_court_reservation(privateTitle, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('Master Lesson', 1, '2018/06/20', '11:00', '13:00', '111111111');
+
+INSERT INTO Private_course_court_reservation(privateTitle, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('Amateur Lesson', 2, '2018/06/20', '11:00', '12:00', '222222222');
+
+INSERT INTO Private_course_court_reservation(privateTitle, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('Amateur Lesson 2',	1,	'2018/06/20',	'14:00',	'16:00', '333333333');
+
+INSERT INTO Private_course_court_reservation(privateTitle, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('Master Lesson 2',	2,	'2018/06/21', '14:00',	'16:00', '444444444');
+
+INSERT INTO Private_course_court_reservation(privateTitle, courtNumber, date, startTime, endTime, officeSIN)
+VALUES ('Master Lesson 3',	3,	'2018/06/22',	'14:00',	'17:00', '555555555');
+
+
+
+CREATE TABLE Customer_register_program (
+ phoneNumber char(12) NOT NULL,
+ name char(50) NOT NULL,
+ programTitle char(20) NOT NULL,
+ programRegNumber int,
+ officeSIN char(9), 
+ PRIMARY KEY (programRegNumber),
+ FOREIGN KEY (programTitle) REFERENCES Program_taught,
+ FOREIGN KEY (phoneNumber, name) REFERENCES Customers,
+ FOREIGN KEY (officeSIN) REFERENCES Office_Employees
+);
+
+
+INSERT INTO Customer_register_program(phoneNumber, name, programTitle, programRegNumber, officeSIN)
+VALUES ('778-873-1165', 'Jin Min Lee', 'Intro to tennis', 1, '111111111');
+
+INSERT INTO Customer_register_program(phoneNumber, name, programTitle, programRegNumber, officeSIN)
+VALUES ('778-886-5715',	'Mark Pawlowski',	'Intermediate tennis',	2,	'222222222');
+
+INSERT INTO Customer_register_program(phoneNumber, name, programTitle, programRegNumber, officeSIN)
+VALUES ('604-872-5815',	'Peyman Bateni',	'Amatuer tennis',	3,	'333333333');
+
+INSERT INTO Customer_register_program(phoneNumber, name, programTitle, programRegNumber, officeSIN)
+VALUES ('604-883-5678',	'Qiao Zhu',	'Semi-pro tennis',	4,	'444444444');
+
+INSERT INTO Customer_register_program(phoneNumber, name, programTitle, programRegNumber, officeSIN)
+VALUES ('778-886-2413',	'Nadal Rafael',	'Professional tennis',	5,	'555555555');
+
+
+
+-- we don't need officeSIN here, unlike the program register?
+
+CREATE TABLE Customer_register_private (
+ phoneNumber char(12) NOT NULL,
+ name char(50) NOT NULL,
+ privateTitle char(20) NOT NULL,
+ privateRegNumber int, 
+ PRIMARY KEY (privateRegNumber),
+ FOREIGN KEY (phoneNumber, name) REFERENCES Customers,
+ FOREIGN KEY (privateTitle) REFERENCES Private_taught,
+ UNIQUE (privateTitle)
+);
+
+
+INSERT INTO Customer_register_private(phoneNumber, name, privateTitle, privateRegNumber)
+VALUES ('778-873-1165',	'Jin Min Lee', 'Master Lesson', 1);
+
+INSERT INTO Customer_register_private(phoneNumber, name, privateTitle, privateRegNumber)
+VALUES ('778-886-5715',	'Mark Pawlowski', 'Amateur Lesson', 2);
+
+INSERT INTO Customer_register_private(phoneNumber, name, privateTitle, privateRegNumber)
+VALUES ('604-872-5815',	'Peyman Bateni', 'Amateur Lesson 2', 3);
+
+INSERT INTO Customer_register_private(phoneNumber, name, privateTitle, privateRegNumber)
+VALUES ('604-883-5678',	'Qiao Zhu', 'Master Lesson 2', 4);
+
+INSERT INTO Customer_register_private(phoneNumber, name, privateTitle, privateRegNumber)
+VALUES ('778-886-2413',	'Nadal Rafael', 'Master Lesson 3', 5);
+
+
+---------------------- aboves are inserted
