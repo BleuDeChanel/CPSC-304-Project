@@ -20,11 +20,16 @@ SELECT name FROM Instructors I WHERE NOT EXISTS
  (SELECT PeT.privateTitle
 FROM Private_taught PeT WHERE PeT.insSIN=I.insSIN))
 
+user input the private_fee
+
+
 Aggregation
 select max(fee) from membership_plans
 select count(*) from program_taught P, Instructors I,
 WHERE p.insSIN = i.insSIN AND i.name = 'John'
 
+
+Nested Aggregation - not working on the ElephantSQL
 SELECT Temp.insSIN, Temp.aggfee
 FROM (SELECT PT.insSIN, AVG (PT.private_fee) AS aggfee
 FROM Private_taught PT
