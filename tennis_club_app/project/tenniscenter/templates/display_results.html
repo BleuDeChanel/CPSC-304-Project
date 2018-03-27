@@ -3,25 +3,25 @@
 {% block content %}
 <h1>Query Result</h1>
 
-<!-- <h2>Dynamic content</h2> -->
-
-	<!-- <form action="/tenniscenter/selection/" method="post">
-    {% csrf_token %}
-    {{ selection_form }}
-    <input type="submit" value="Submit"  />
-	</form> -->
   {% if result %}
-  <ul>
+  <table>
+    {% if headers %}
+      <tr>
+        {% for header in headers %}
+          <td><b>{{ header }}</b></td>
+        {% endfor %}
+      </tr>
+    {% endif %}
 
     {% for res in result %}
-    <li>
+    <tr>
       {% for item in res %}
-        {{ item }}
+        <td>{{ item }}</td>
       {% endfor %}
-    </li>
+    </tr>
     {% endfor %}
 
-  </ul>
+  </table>
   {% else %}
     <p>There are no results.</p>
   {% endif %}

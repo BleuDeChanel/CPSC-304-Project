@@ -4,7 +4,7 @@ import logging
 
 # Create your views here.
 from .models import Customers, Instructors, MembershipPlans
-from .forms import SelectInstructors, JoinQuery, AggregationQuery
+from .forms import SelectInstructors, JoinQuery, AggregationQuery, DivisionQuery
 
 def index(request):
 	"""
@@ -18,11 +18,12 @@ def index(request):
 	selectInstructors = SelectInstructors();
 	joinQuery = JoinQuery();
 	aggregationQuery = AggregationQuery();
+	divisionQuery = DivisionQuery();
 	# Render the HTML template index.html with the data in the context variable
 	return render(
 		request,
 		'index.html',
-		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery},
+		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery},
 	)
 
 
@@ -49,17 +50,14 @@ def selection(request):
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
 			result = [(nameChecked, nameInput)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Sample Header", "Header2"]
 
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result},
+			context={'result':result,'headers':headers},
 			)
-
-	# if a GET (or any other method) we'll create a blank form
-	# else:
-		
-
 	return HttpResponseRedirect('/tenniscenter/');
 
 def join(request):
@@ -74,11 +72,35 @@ def join(request):
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
 			result = [(nameInput)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Sample Header"]
 
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result},
+			context={'result':result,'headers':headers},
+			)
+	return HttpResponseRedirect('/tenniscenter/');
+
+def division(request):
+	if request.method == 'POST':
+		test = DivisionQuery(request.POST)
+		if test.is_valid():
+			# Form inputs here.
+			minFee = test['minFee'].value()
+			
+			# SQL query here
+
+			# Pass array of results in context.
+			# each tuple in the array is a result from the query
+			result = [(minFee)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Sample Header"]
+
+			return render(
+			request,
+			'display_results.html',
+			context={'result':result,'headers':headers},
 			)
 	return HttpResponseRedirect('/tenniscenter/');
 
@@ -93,14 +115,18 @@ def aggregation(request):
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [("aggregateChoice")]
+			result = [(aggregateChoice)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Sample Header"]
 
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result},
+			context={'result':result,'headers':headers},
 			)
 	return HttpResponseRedirect('/tenniscenter/');
+
+
 
 
 

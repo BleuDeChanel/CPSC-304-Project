@@ -32,6 +32,15 @@
     <input type="submit" value="Submit"  />
 	</form>
 
+	<h3>Division Query</h3>
+	<form action="/tenniscenter/division/" method="post">
+    {% csrf_token %}
+    <table>
+    {{ division_query.as_table }}
+    </table>
+    <input type="submit" value="Submit"  />
+	</form>
+
 	<h3>Aggregation Query</h3>
 	<form action="/tenniscenter/aggregation/" method="post">
     {% csrf_token %}

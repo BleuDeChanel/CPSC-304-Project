@@ -28,6 +28,7 @@ urlpatterns += [
     path('selection/', include('tenniscenter.urls')),
     path('join/', include('tenniscenter.urls')),
     path('aggregation/', include('tenniscenter.urls')),
+    path('division/', include('tenniscenter.urls')),
     
 ]
 
