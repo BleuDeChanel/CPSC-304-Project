@@ -1,0 +1,6 @@
+Query Lists
+
+select name, phonenumber from customers
+
+select tier from club_memberships INNER JOIN customers On club_memberships.membershipid = customers.membershipid where customers.name = 'Jin Min Lee'
+

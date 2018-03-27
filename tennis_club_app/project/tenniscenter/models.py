@@ -101,7 +101,7 @@ class CustomerRegisterProgram(models.Model):
 
 class CustomerReservesCourt(models.Model):
     phonenumber = models.ForeignKey('Customers', models.DO_NOTHING, db_column='phonenumber')
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50) # this should be fk too
     courtnumber = models.IntegerField(primary_key=True)
     date = models.DateField()
     starttime = models.DateField(blank=True, null=True)
