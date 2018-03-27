@@ -207,7 +207,7 @@ INSERT INTO Customer_reserves_court(phoneNumber, name, courtNumber, date, startT
 VALUES ('604-883-5678', 'Qiao Zhu', 4, '2018/05/05', '16:00', '17:00', '444444444');
 
 INSERT INTO Customer_reserves_court(phoneNumber, name, courtNumber, date, startTime, endTime, officeSIN)
-VALUES ('778-886-2413', 'Nadal Rafael',5,'2018/07/01','9:00','11:30','555555555');
+VALUES ('778-886-2413', 'Nadal Rafael', 5,'2018/07/01','9:00','11:30','555555555');
 
 
 
