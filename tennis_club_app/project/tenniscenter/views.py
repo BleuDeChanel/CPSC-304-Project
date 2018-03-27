@@ -46,6 +46,41 @@ def selection(request):
 
 			
 			# SQL query here
+			query = "SELECT "
+			if (nameChecked):
+				query += "name ,"
+			if (phoneChecked):
+				query += "phoneNumber ,"
+			if (emailChecked):
+				query += "email ,"
+			if (addressChecked):
+				query += "address ,"
+			if (memIDChecked):
+				query += "membershipID ,"
+
+			if (query[-1:] == ","):
+				query = query[:-1]
+
+			print(query)
+
+			if (nameInput or phoneInput or emailInput or addressInput or memIDInput):
+				query += "WHERE "
+				if (nameInput):
+					query += "name = '" + nameInput + "' AND "
+				if (phoneInput):
+					query += "name = '" + phoneInput + "' AND "
+				if (emailInput):
+					query += "name = '" + emailInput + "' AND "
+				if (addressInput):
+					query += "name = '" + addressInput + "' AND "
+				if (memIDInput):
+					query += "name = " + memIDInput + " AND "
+
+			if (query[-4:] == "AND "):
+				query = query[:-4]
+				query += ";"
+
+			print(query)
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
