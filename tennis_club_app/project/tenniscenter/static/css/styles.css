@@ -3,3 +3,9 @@
     padding: 0;
     list-style: none;
 }
+table.form>tbody>tr>th {
+	padding-right: 10px;
+}
+table.result>tbody>tr>td {
+	padding-right: 10px;
+}
