@@ -12,4 +12,11 @@ class SelectInstructors(forms.Form):
 	addressInput = forms.CharField(label='Address Selection', max_length=100, required = False)
 	memIDInput = forms.CharField(label='MemID Selection', max_length=100, required = False)
 	
+class JoinQuery(forms.Form):
+	# Form inputs for joinquery
+	nameInput = forms.CharField(label="Name", required = True)
 
+
+class AggregationQuery(forms.Form):
+	# Form inputs for joinquery
+	aggregateChoice = forms.ChoiceField(choices=[("min","min"),("max","max"),("average","average"),("count","count")], required = True)
