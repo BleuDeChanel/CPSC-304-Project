@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>The Tennis Center</h1>
+
+  <p>Welcome to <em>The Tennis Center</em>, a place to manage your tennis needs.</p>
+
+<h2>Dynamic content</h2>
+
+  <p>The tennis center has the following record counts:</p>
+  <ul>
+    <li><strong>Customers:</strong> {{ num_customers }}</li>
+    <li><strong>Instructors:</strong> {{ num_instructors }}</li>
+    <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li>
+  </ul>
+
+{% endblock %}
