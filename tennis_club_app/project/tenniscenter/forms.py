@@ -21,4 +21,6 @@ class DivisionQuery(forms.Form):
 class AggregationQuery(forms.Form):
 	aggregateChoice = forms.ChoiceField(choices=[("min","min"),("max","max"),("average","average"),("count","count")], required = True)
 
-
+class NestedAggregationQuery(forms.Form):
+	aggregateChoiceOne = forms.ChoiceField(choices=[("min","min"),("max","max")], required = True)
+	aggregateChoiceTwo = forms.ChoiceField(choices=[("min","min"),("max","max"),("average","average"),("count","count")], required = True)

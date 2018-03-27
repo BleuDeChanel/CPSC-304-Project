@@ -4,7 +4,7 @@ import logging
 
 # Create your views here.
 from .models import Customers, Instructors, MembershipPlans
-from .forms import SelectInstructors, JoinQuery, AggregationQuery, DivisionQuery
+from .forms import SelectInstructors, JoinQuery, AggregationQuery, DivisionQuery, NestedAggregationQuery
 
 def index(request):
 	"""
@@ -19,11 +19,12 @@ def index(request):
 	joinQuery = JoinQuery();
 	aggregationQuery = AggregationQuery();
 	divisionQuery = DivisionQuery();
+	nestedAggregationQuery = NestedAggregationQuery();
 	# Render the HTML template index.html with the data in the context variable
 	return render(
 		request,
 		'index.html',
-		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery},
+		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery},
 	)
 
 
@@ -126,7 +127,28 @@ def aggregation(request):
 			)
 	return HttpResponseRedirect('/tenniscenter/');
 
+def nestedAggregation(request):
+	if request.method == 'POST':
+		test = NestedAggregationQuery(request.POST)
+		if test.is_valid():
+			# Form inputs here.
+			aggregateChoiceOne = test['aggregateChoiceOne'].value()
+			aggregateChoiceTwo = test['aggregateChoiceTwo'].value()
+			
+			# SQL query here
 
+			# Pass array of results in context.
+			# each tuple in the array is a result from the query
+			result = [(aggregateChoiceOne,aggregateChoiceTwo)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Choice1", "Choice2"]
+
+			return render(
+			request,
+			'display_results.html',
+			context={'result':result,'headers':headers},
+			)
+	return HttpResponseRedirect('/tenniscenter/');
 
 
 
