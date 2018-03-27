@@ -24,3 +24,10 @@ Aggregation
 select max(fee) from membership_plans
 select count(*) from program_taught P, Instructors I,
 WHERE p.insSIN = i.insSIN AND i.name = 'John'
+
+SELECT Temp.insSIN, Temp.aggfee
+FROM (SELECT PT.insSIN, AVG (PT.private_fee) AS aggfee
+FROM Private_taught PT
+GROUP BY PT.insSIN) AS Temp
+WHERE Temp.aggfee = (SELECT MAX (Temp.aggfee)
+FROM Temp)
