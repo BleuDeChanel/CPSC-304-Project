@@ -12,18 +12,13 @@ users input the customer name
 
 
 Division Query
-SELECT name
-FROM Instructors I
-WHERE NOT EXISTS
- 	((SELECT privateTitle
- 	FROM Private_taught
-	WHERE insSIN = I.insSIN)
- 	EXCEPT
- 	(SELECT privateTitle
- 	FROM Private_taught
- 	WHERE private_fee < 5000))
-
-
+SELECT name FROM Instructors I WHERE NOT EXISTS
+ ((SELECT PT.privateTitle 
+ FROM Private_taught PT
+ WHERE PT.private_fee > 5000)
+ EXCEPT
+ (SELECT PeT.privateTitle
+FROM Private_taught PeT WHERE PeT.insSIN=I.insSIN))
 
 Aggregation
 select max(fee) from membership_plans
