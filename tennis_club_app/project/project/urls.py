@@ -32,6 +32,7 @@ urlpatterns += [
 from django.views.generic import RedirectView
 urlpatterns += [
     path('', RedirectView.as_view(url='/tenniscenter/')),
+    path('selection/', RedirectView.as_view(url='/selection/')),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

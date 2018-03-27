@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Query Result</h1>
+
+<!-- <h2>Dynamic content</h2> -->
+
+	<!-- <form action="/tenniscenter/selection/" method="post">
+    {% csrf_token %}
+    {{ selection_form }}
+    <input type="submit" value="Submit"  />
+	</form> -->
+  {% if result %}
+  <ul>
+
+    {% for res in result %}
+    <li>
+      {% for i in tuple_length %}
+        {{ res.i }}
+      {% endfor %}
+    </li>
+    {% endfor %}
+
+  </ul>
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}
+
+{% endblock %}

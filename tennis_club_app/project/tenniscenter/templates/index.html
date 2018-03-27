@@ -14,10 +14,12 @@
     <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li> -->
   </ul>
 
-	<form action="/selection/" method="post">
+	<form action="/tenniscenter/selection/" method="post">
     {% csrf_token %}
-    {{ selection_form }}
-    <input type="submit" value="Submit" />
+    <table>
+    {{ select_instructors.as_table }}
+    </table>
+    <input type="submit" value="Submit"  />
 	</form>
 
 {% endblock %}

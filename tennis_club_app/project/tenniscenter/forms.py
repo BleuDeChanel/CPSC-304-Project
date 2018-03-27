@@ -1,4 +1,15 @@
 from django import forms
 
-class SelectionForm(forms.Form):
-    your_name = forms.CharField(label='Your name', max_length=100)
+class SelectInstructors(forms.Form):
+	nameChecked = forms.BooleanField(label="Name", required = False)
+	phoneChecked = forms.BooleanField(label="Phone #", required = False)
+	emailChecked = forms.BooleanField(label="Email", required = False)
+	addressChecked = forms.BooleanField(label="Address", required = False)
+	memIDChecked = forms.BooleanField(label="MemID", required = False)
+	nameInput = forms.CharField(label='Name Selection', max_length=100, required = False)
+	phoneInput = forms.CharField(label='Phone Selection', max_length=100, required = False)
+	emailInput = forms.CharField(label='Email Selection', max_length=100, required = False)
+	addressInput = forms.CharField(label='Address Selection', max_length=100, required = False)
+	memIDInput = forms.CharField(label='MemID Selection', max_length=100, required = False)
+	
+
