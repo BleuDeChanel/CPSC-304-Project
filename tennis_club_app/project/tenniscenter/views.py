@@ -4,7 +4,7 @@ import logging
 
 # Create your views here.
 from .models import Customers, Instructors, MembershipPlans
-from .forms import SelectInstructors
+from .forms import SelectInstructors, JoinQuery, AggregationQuery
 
 def index(request):
 	"""
@@ -16,11 +16,13 @@ def index(request):
 	num_membership_plans=MembershipPlans.objects.count()  # The 'all()' is implied by default.
 
 	selectInstructors = SelectInstructors();
+	joinQuery = JoinQuery();
+	aggregationQuery = AggregationQuery();
 	# Render the HTML template index.html with the data in the context variable
 	return render(
 		request,
 		'index.html',
-		context={'select_instructors':selectInstructors},
+		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery},
 	)
 
 
@@ -41,30 +43,64 @@ def selection(request):
 			memIDInput = test['memIDInput'].value()
 
 
-			# Use above to decide what to project and select on instructors
+			
 			# SQL query here
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
 			result = [(nameChecked, nameInput)]
 
-			# Set this to the number of tuples in each item in result. Here it is 2.
-			tupleLength = 2
-
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result, 'tuple_length':range(tupleLength)},
+			context={'result':result},
 			)
 
 	# if a GET (or any other method) we'll create a blank form
 	# else:
 		
 
-	return HttpResponse("aaabbbb");
+	return HttpResponseRedirect('/tenniscenter/');
 
+def join(request):
+	if request.method == 'POST':
+		test = JoinQuery(request.POST)
+		if test.is_valid():
+			# Form inputs here.
+			nameInput = test['nameInput'].value()
+			
+			# SQL query here
 
+			# Pass array of results in context.
+			# each tuple in the array is a result from the query
+			result = [(nameInput)]
 
+			return render(
+			request,
+			'display_results.html',
+			context={'result':result},
+			)
+	return HttpResponseRedirect('/tenniscenter/');
+
+def aggregation(request):
+	if request.method == 'POST':
+		test = AggregationQuery(request.POST)
+		if test.is_valid():
+			# Form inputs here.
+			aggregateChoice = test['aggregateChoice'].value()
+			
+			# SQL query here
+
+			# Pass array of results in context.
+			# each tuple in the array is a result from the query
+			result = [("aggregateChoice")]
+
+			return render(
+			request,
+			'display_results.html',
+			context={'result':result},
+			)
+	return HttpResponseRedirect('/tenniscenter/');
 
 
 
