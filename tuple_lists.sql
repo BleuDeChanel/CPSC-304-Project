@@ -131,8 +131,8 @@ create table Program_court_reservation (
  	officeSIN char(9) not null,
  	programTitle char(20) not null, 
  	PRIMARY KEY (courtNumber, date, startTime),
- 	FOREIGN KEY (officeSIN) REFERENCES Office_Employees ON DELETE CASCADE ON UPDATE CASCADE,
- 	FOREIGN KEY (programTitle) REFERENCES Program_taught
+ 	FOREIGN KEY (officeSIN) REFERENCES Office_Employees,
+ 	FOREIGN KEY (programTitle) REFERENCES Program_taught ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO Program_court_reservation(courtNumber, date, startTime,endTime, officeSIN, programTitle)	
@@ -190,7 +190,7 @@ CREATE TABLE Customer_reserves_court (
   officeSIN char(9) NOT NULL,
   PRIMARY KEY (courtNumber, date, startTime),
   FOREIGN KEY (officeSIN) REFERENCES Office_employees,
-  FOREIGN KEY (phoneNumber, name) REFERENCES Customers
+  FOREIGN KEY (phoneNumber, name) REFERENCES Customers ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -220,8 +220,8 @@ CREATE TABLE Private_course_court_reservation (
  officeSIN char(9) not null,
 
  PRIMARY KEY (courtNumber, date, startTime),
- FOREIGN KEY (privateTitle) REFERENCES Private_taught,
- FOREIGN KEY (officeSIN) REFERENCES Office_employees ON DELETE CASCADE ON UPDATE CASCADE
+ FOREIGN KEY (privateTitle) REFERENCES Private_taught ON DELETE CASCADE ON UPDATE CASCADE,
+ FOREIGN KEY (officeSIN) REFERENCES Office_employees
 );
 
 
@@ -249,8 +249,8 @@ CREATE TABLE Customer_register_program (
  programRegNumber int,
  officeSIN char(9), 
  PRIMARY KEY (programRegNumber),
- FOREIGN KEY (programTitle) REFERENCES Program_taught,
- FOREIGN KEY (phoneNumber, name) REFERENCES Customers,
+ FOREIGN KEY (programTitle) REFERENCES Program_taught ON DELETE CASCADE ON UPDATE CASCADE,
+ FOREIGN KEY (phoneNumber, name) REFERENCES Customers ON DELETE CASCADE ON UPDATE CASCADE,
  FOREIGN KEY (officeSIN) REFERENCES Office_Employees
 );
 
@@ -280,8 +280,8 @@ CREATE TABLE Customer_register_private (
  privateTitle char(20) NOT NULL,
  privateRegNumber int, 
  PRIMARY KEY (privateRegNumber),
- FOREIGN KEY (phoneNumber, name) REFERENCES Customers,
- FOREIGN KEY (privateTitle) REFERENCES Private_taught,
+ FOREIGN KEY (phoneNumber, name) REFERENCES Customers ON DELETE CASCADE ON UPDATE CASCADE,
+ FOREIGN KEY (privateTitle) REFERENCES Private_taught ON DELETE CASCADE ON UPDATE CASCADE,
  UNIQUE (privateTitle)
 );
 

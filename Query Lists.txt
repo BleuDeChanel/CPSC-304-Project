@@ -29,8 +29,7 @@ select max(fee) from membership_plans
 select count(*) from program_taught P, Instructors I,
 WHERE p.insSIN = i.insSIN AND i.name = 'John'
 
-
-Nested Aggregation - not working on the ElephantSQL yet
+Nested Aggregation -on the ElephantSQL we need to create the view first
 
 AVG is the second param.
 MAX is the first param.
@@ -43,3 +42,22 @@ Create View Tem(insSIN,aggfee) as
 Select insSIN,aggfee
 from Tem
 where aggfee =  (SELECT MAX(aggfee) FROM Tem);
+
+Delete: 
+Delete from Office_Employees
+where name = 'Mike Smith';
+
+Update:
+/*
+Alter table Program_taught
+add check (numberOfPeople >= 2);
+*/
+
+//violates constraint 
+INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
+VALUES ('tennis pro', 1, 199.98, '2018-05-01', '2018-06-30', '666666666');
+
+
+//passes constraint 
+INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
+VALUES ('tennis pro', 3, 199.98, '2018-05-01', '2018-06-30', '666666666');

@@ -8,7 +8,8 @@ urlpatterns = [
     path('join/', views.join, name='join'),
     path('aggregation/', views.aggregation, name='aggregation'),
     path('division/', views.division, name='division'),
-    path('nestedaggregation/', views.nestedAggregation, name='nestedaggregation')
+    path('nestedaggregation/', views.nestedAggregation, name='nestedaggregation'),
+    path('deletecascade/', views.deleteCascade, name='deletecascade'),
     
     
 ]
