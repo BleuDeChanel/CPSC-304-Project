@@ -5,7 +5,7 @@ import logging
 
 # Create your views here.
 from .models import Customers, Instructors, MembershipPlans
-from .forms import SelectInstructors, JoinQuery, AggregationQuery, DivisionQuery, NestedAggregationQuery
+from .forms import SelectInstructors, JoinQuery, AggregationQuery, DivisionQuery, NestedAggregationQuery, DeleteOperationCascade
 
 def index(request):
 	"""
@@ -21,11 +21,12 @@ def index(request):
 	aggregationQuery = AggregationQuery();
 	divisionQuery = DivisionQuery();
 	nestedAggregationQuery = NestedAggregationQuery();
+	deleteOperationCascade = DeleteOperationCascade();
 	# Render the HTML template index.html with the data in the context variable
 	return render(
 		request,
 		'index.html',
-		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery},
+		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery,'delete_operation_cascade':deleteOperationCascade},
 	)
 
 
@@ -195,6 +196,37 @@ def nestedAggregation(request):
 			result = [(aggregateChoiceOne,aggregateChoiceTwo)]
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
 			headers = ["Choice1", "Choice2"]
+
+			return render(
+			request,
+			'display_results.html',
+			context={'result':result,'headers':headers},
+			)
+	return HttpResponseRedirect('/tenniscenter/');
+
+def deleteCascade(request):
+	if request.method == 'POST':
+		test = DeleteOperationCascade(request.POST)
+		if test.is_valid():
+			# Form inputs here.
+			officeSin = test['officeSin'].value()
+			print(type(officeSin))
+			
+			query = "Delete from Office_Employees Where officesin = '" + officeSin +"'"
+			# SQL query here
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
+			# Show all the officeEmployees, showing the one deleted isn't there
+			# Show program court reservation
+
+
+			# Pass array of results in context.
+			# each tuple in the array is a result from the query
+			result = [(officeSin)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Choice1"]
 
 			return render(
 			request,
