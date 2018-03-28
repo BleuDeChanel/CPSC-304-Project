@@ -44,8 +44,6 @@ def selection(request):
 			emailInput = test['emailInput'].value()
 			addressInput = test['addressInput'].value()
 			memIDInput = test['memIDInput'].value()
-
-
 			
 			# SQL query here
 			query = "SELECT "
@@ -91,15 +89,29 @@ def selection(request):
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(nameChecked, nameInput)]
+			result = row
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Sample Header", "Header2"]
+			headers = []
+
+			if (nameChecked):
+				headers.append("Name")
+			if (phoneChecked):
+				headers.append("PhoneNumber")
+			if (emailChecked):
+				headers.append("Email")
+			if (addressChecked):
+				headers.append("Address")
+			if (memIDChecked):
+				headers.append("MembershipID")
+
+			print(headers)
 
 			return render(
 			request,
 			'display_results.html',
 			context={'result':result,'headers':headers},
 			)
+
 	return HttpResponseRedirect('/tenniscenter/');
 
 def join(request):
