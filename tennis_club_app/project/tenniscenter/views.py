@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.db import connection
 import logging
 
 # Create your views here.
@@ -62,7 +63,7 @@ def selection(request):
 			if (query[-1:] == ","):
 				query = query[:-1]
 
-			print(query)
+			query += "FROM Customers "
 
 			if (nameInput or phoneInput or emailInput or addressInput or memIDInput):
 				query += "WHERE "
@@ -82,6 +83,11 @@ def selection(request):
 				query += ";"
 
 			print(query)
+
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query

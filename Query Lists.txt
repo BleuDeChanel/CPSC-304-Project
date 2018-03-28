@@ -30,11 +30,11 @@ WHERE p.insSIN = i.insSIN AND i.name = 'John'
 
 
 Nested Aggregation - not working on the ElephantSQL yet
-Create View Temp(insSIN,aggfee) as 
+Create View Tem(insSIN,aggfee) as 
    SELECT PT.insSIN, AVG (PT.private_fee) AS aggfee
    FROM Private_taught PT
    GROUP BY PT.insSIN;
 
 Select insSIN,aggfee
-from Temp
-where average =  (SELECT MAX(aggfee) FROM Temp)
+from Tem
+where aggfee =  (SELECT MAX(aggfee) FROM Tem);
