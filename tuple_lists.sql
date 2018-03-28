@@ -249,7 +249,7 @@ CREATE TABLE Customer_register_program (
  programRegNumber int,
  officeSIN char(9), 
  PRIMARY KEY (programRegNumber),
- FOREIGN KEY (programTitle) REFERENCES Program_taught,
+ FOREIGN KEY (programTitle) REFERENCES Program_taught ON DELETE CASCADE ON UPDATE CASCADE,
  FOREIGN KEY (phoneNumber, name) REFERENCES Customers,
  FOREIGN KEY (officeSIN) REFERENCES Office_Employees
 );

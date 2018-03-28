@@ -43,4 +43,18 @@ Delete:
 Delete from Office_Employees
 where name = 'Mike Smith';
 
+Update:
+/*
+Alter table Program_taught
+add check (numberOfPeople >= 2);
+*/
+
+//violates constraint 
+INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
+VALUES ('tennis pro', 1, 199.98, '2018-05-01', '2018-06-30', '666666666');
+
+
+//passes constraint 
+INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
+VALUES ('tennis pro', 3, 199.98, '2018-05-01', '2018-06-30', '666666666');
 
