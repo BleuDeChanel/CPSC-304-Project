@@ -1,3 +1,14 @@
+CREATE TABLE Club_Memberships (
+ membershipID int not null,
+ tier int NOT NULL,
+ SID char(8),
+ PRIMARY KEY (membershipID),
+ FOREIGN KEY (tier) REFERENCES Membership_Plans,
+ FOREIGN KEY (SID) REFERENCES Student_Members ON DELETE CASCADE ON UPDATE CASCADE,
+ UNIQUE (SID)
+);
+
+
 INSERT INTO club_memberships(membershipID, tier)
 VALUES (1,1);
 
@@ -13,6 +24,13 @@ VALUES (4,4);
 INSERT INTO club_memberships(membershipID, tier)
 VALUES (5,5);
 
+
+
+CREATE TABLE Membership_plans (
+  tier int,
+  fee decimal(7,2),
+  PRIMARY KEY (tier)
+);
 
 
 INSERT INTO Membership_Plans(tier, fee)
@@ -32,6 +50,14 @@ VALUES (5,100);
 
 
 
+CREATE TABLE Student_Members (
+ membershipID int not null,
+ SID char(8) not null,
+ PRIMARY KEY (membershipID),
+ FOREIGN KEY (membershipID) REFERENCES Club_Memberships
+);
+
+
 INSERT INTO Student_Members(membershipID, SID)
 VALUES (1, 40018153);
 
@@ -47,6 +73,17 @@ VALUES (4, 36789148);
 INSERT INTO Student_Members(membershipID, SID)
 VALUES (5, 12308164);
 
+
+
+CREATE TABLE Customers (
+ phoneNumber char(12),
+ name char(50),
+ email char(20),
+ address char(50),
+ membershipID int,
+ PRIMARY KEY (phoneNumber, name),
+ FOREIGN KEY (membershipID) REFERENCES Club_Memberships ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 
 INSERT INTO Customers(phoneNumber, name, email, address, membershipID)
@@ -66,6 +103,15 @@ VALUES ('778-886-2413', 'Nadal Rafael', 'nadal.r@ubc.ca', '3355 Binning Rd, Vanc
 
 
 
+CREATE TABLE Office_Employees (
+ officeSIN char(9),
+ phoneNumber char(12),
+ name char(12),
+ email char(20),
+ PRIMARY KEY (officeSIN)
+);
+
+
 INSERT INTO Office_Employees(officeSIN, email,phoneNumber,name)
 VALUES ('111111111', 'john@gmail.com', '111-222-4455', 'John Doe');
 
@@ -83,11 +129,14 @@ VALUES ('555555555', 'sarah@gmail.com', '111-222-4499', 'Sarah Young');
 
 
 
+CREATE TABLE Instructors (
+ insSIN char(9),
+ phoneNumber int,
+ name char(12),
+ email char(20),
+ PRIMARY KEY (insSIN)
+);
 
- -- insSIN char(9),
- -- phoneNumber int,
- -- name char(12),
- -- email char(20),
 
 INSERT INTO Instructors(insSIN,phoneNumber,name,email)	
 VALUES ('666666666',1112224455,'Roger','roger@gmail.com');
