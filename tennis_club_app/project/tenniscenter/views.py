@@ -122,12 +122,20 @@ def join(request):
 			nameInput = test['nameInput'].value()
 			
 			# SQL query here
+			query = "select tier from club_memberships INNER JOIN customers On club_memberships.membershipid = customers.membershipid where customers.name = '"
+			query += nameInput + "';"
 
+			print(query)
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(nameInput)]
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
+
+			result = row
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Sample Header"]
+			headers = ["Tier"]
 
 			return render(
 			request,
@@ -144,12 +152,21 @@ def division(request):
 			minFee = test['minFee'].value()
 			
 			# SQL query here
+			query = "SELECT name FROM Instructors I WHERE NOT EXISTS ((SELECT PT.privateTitle FROM Private_taught PT WHERE PT.private_fee > "
+			query += minFee + ") "
+			query += "EXCEPT (SELECT PeT.privateTitle FROM Private_taught PeT WHERE PeT.insSIN=I.insSIN))"
 
+			print(query)
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(minFee)]
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
+
+			result = row
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Sample Header"]
+			headers = ["Instructor Name"]
 
 			return render(
 			request,
@@ -164,14 +181,33 @@ def aggregation(request):
 		if test.is_valid():
 			# Form inputs here.
 			aggregateChoice = test['aggregateChoice'].value()
-			
+
 			# SQL query here
+			if aggregateChoice == "average":
+				query = "SELECT " + "avg" + "(fee) FROM membership_plans"
+			else:
+				query = "SELECT " + aggregateChoice + "(fee) FROM membership_plans"
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(aggregateChoice)]
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
+
+			result = row
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Sample Header"]
+			headers = []
+			if aggregateChoice == "min":
+				headers.append("Min")
+			if aggregateChoice == "max":
+				headers.append("Max")
+			if aggregateChoice == "avgerage":
+				headers.append("Avg")
+			if aggregateChoice == "count":
+				headers.append("Count")	
+
+			print(headers)
 
 			return render(
 			request,
@@ -189,18 +225,35 @@ def nestedAggregation(request):
 			aggregateChoiceTwo = test['aggregateChoiceTwo'].value()
 			
 			# SQL query here
+			view_query = "Create View Temp(insSIN,aggfee) as SELECT PT.insSIN, "
+			if aggregateChoiceTwo == "average":
+				view_query += "AVG(PT.private_fee) AS aggfee FROM Private_taught PT GROUP BY PT.insSIN"
+			else:
+				view_query += aggregateChoiceTwo + "(PT.private_fee) AS aggfee FROM Private_taught PT GROUP BY PT.insSIN"
+
+			query = "Select insSIN,aggfee FROM Temp WHERE aggfee =  (SELECT " + aggregateChoiceOne + "(aggfee) FROM Temp)"
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(aggregateChoiceOne,aggregateChoiceTwo)]
+			with connection.cursor() as cursor:
+				cursor.execute(view_query)
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
+
+			result = row
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Choice1", "Choice2"]
+			headers = ["Instructor SIN", aggregateChoiceOne]
+	
+			with connection.cursor() as cursor:
+				cursor.execute("DROP VIEW Temp")
 
 			return render(
 			request,
 			'display_results.html',
 			context={'result':result,'headers':headers},
 			)
+
 	return HttpResponseRedirect('/tenniscenter/');
 
 

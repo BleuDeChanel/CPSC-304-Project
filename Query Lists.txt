@@ -21,6 +21,7 @@ SELECT name FROM Instructors I WHERE NOT EXISTS
 FROM Private_taught PeT WHERE PeT.insSIN=I.insSIN))
 
 user input the private_fee
+select instructor's name who teaches all private courses with private fee above the given input.	
 
 
 Aggregation
@@ -30,6 +31,10 @@ WHERE p.insSIN = i.insSIN AND i.name = 'John'
 
 
 Nested Aggregation - not working on the ElephantSQL yet
+
+AVG is the second param.
+MAX is the first param.
+
 Create View Tem(insSIN,aggfee) as 
    SELECT PT.insSIN, AVG (PT.private_fee) AS aggfee
    FROM Private_taught PT
