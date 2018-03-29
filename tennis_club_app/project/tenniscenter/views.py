@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.db import connection
+from django.db.utils import *
 import logging
 
 # Create your views here.
@@ -30,7 +31,6 @@ def index(request):
 		'index.html',
 		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery,'delete_operation_cascade':deleteOperationCascade, 'delete_operation': deleteOperation, 'update_number_of_people': updateNumberOfPeople},
 	)
-
 
 def selection(request):
 	# if this is a POST request we need to process the form data
@@ -261,7 +261,7 @@ def nestedAggregation(request):
 
 def deleteCascade(request):
 	if request.method == 'POST':
-		test = DeleteOperationCascade(request.POST)
+		test = DeleteOperation(request.POST)
 		if test.is_valid():
 			# Form inputs here.
 			nameInput = test['nameInput'].value()
@@ -270,40 +270,163 @@ def deleteCascade(request):
 			addressInput = test['addressInput'].value()
 			memIDInput = test['memIDInput'].value()
 
-			
-			query = "Delete from Office_Employees Where officesin = '" + officeSin +"'"
 			# SQL query here
-			with connection.cursor() as cursor:
-				cursor.execute(query)
-				row = cursor.fetchall()
-			print(row)
-			# Show all the officeEmployees, showing the one deleted isn't there
-			# Show program court reservation
 
+			delete_query = "DELETE FROM Customers WHERE "
+			
+			if nameInput != "":
+				delete_query += "name = '" + nameInput + "', "
+			if phoneInput != "":
+				delete_query += "phoneNumber = '" + phoneInput + "', "
+			if emailInput != "":
+				delete_query += "email = '" + emailInput + "', "
+			if addressInput != "":
+				delete_query += "address = '" + addressInput + "', "
+			if memIDInput != "":
+				try:
+					memID = int(memIDInput)	
+				except TypeError:
+					ErrorMessage = "MembershipID should be an Integer!"
+					print(ErrorMessage) # maybe send the error message to the front end
+					return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						) 
+					delete_query += "membershipID = " + memIDInput + ","
+
+			if (delete_query[-1:] == ","):
+				delete_query = delete_query[:-1]
+			
+			# if nameInput != "":
+			# 	cascade_customer_reserves_court += "name, "
+			# if phoneInput != "":
+			# 	cascade_customer_reserves_court += "phoneNumber, "
+			# # For now, only let users delete on the primary keys.
+			# if emailInput != "":
+			# 	cascade_customer_reserves_court += "email, "
+			# if addressInput != "":
+			# 	cascade_customer_reserves_court += "address, "
+			# if memIDInput != "":
+			# 	cascade_customer_reserves_court += "membershipID, "
+
+			# if (cascade_customer_reserves_court[-1:] == ","):
+			# 	delete_query = delete_query[:-1]
+
+			# technically we should make sure both name&PN are matching as the PK is a set.
+			cascade_customers = "SELECT * "
+			cascade_customers += "FROM Customers C WHERE "
+
+			if nameInput != "":
+				cascade_customers += "C.name = '" + nameInput + "', "
+			if phoneInput != "":
+				cascade_customers += "C.phoneNumber = '" + phoneInput + "', "
+
+			# this might change later to find the matching on depending on the user's input on non primary keys
+			cascade_customer_reserves_court = "SELECT * "
+
+			matchingName = nameInput
+			matchingPhoneNumber = phoneInput
+
+			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE "
+
+			if nameInput != "":
+				cascade_customer_reserves_court += "CRC.name = '" + matchingName + "', "
+			if phoneInput != "":
+				cascade_customer_reserves_court += "CRC.phoneNumber = '" + matchingPhoneNumber + "', "
+
+			if (cascade_customer_reserves_court[-1:] == ","):
+				cascade_customer_reserves_court = cascade_customer_reserves_court[:-1]
+
+			with connection.cursor() as cursor:
+				try:
+					cursor.execute(cascade_customers)
+					deleted_customers = cursor.fetchall()
+				except exception as err:
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
+
+			with connection.cursor() as cursor:
+				try:
+					cursor.execute(cascade_customer_reserves_court)
+					deleted_crc = cursor.fetchall()
+				except exception as err:
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(officeSin)]
+			result = deleted_customers
+			result2 = deleted_crc
+
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Choice1"]
+			
+			headers = ["Phone Number", "Name", "Email", "Address", "MembershipID"]
+			headers2 = ["Phone Number", "Name", "Court Number", "Date", "Start Time", "End Time", "Office SIN"]
+
+			# leaving these uncommented just in case for now, but results to be displayed will have all col.
+			# if nameInput != "":
+			# 	headers.append("Name")
+			# if phoneInput != "":
+			# 	headers.append("PhoneNumber")
+			# # For now, only let users delete on the primary keys.
+			# if emailInput != "":
+			# 	headers.append("Email")
+			# if addressInput != "":
+			# 	headers.append("Name")
+			# if memIDInput != "":
+			# 	headers.append("Name")
+
+			# select and send it to the front end Then delete
+			with connection.cursor() as cursor:
+				try:
+					cursor.execute(delete_query)
+				except exception as err:
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result,'headers':headers},
+			context={'result':result,'headers':headers, 'result2':result2, 'headers2':headers2, isDelete:True},
 			)
+
 	return HttpResponseRedirect('/tenniscenter/');
 
 def deleteNoCascade(request):
 	if request.method == 'POST':
-		test = DeleteOperationCascade(request.POST)
+		test = DeleteOperation(request.POST)
 		if test.is_valid():
 			# Form inputs here.
-			SID = test['SID'].value()
+			SID = test['sinIDInput'].value()
 			print(type(SID))
-			
-			query = "Select from Student_Members Where SID = '" + SID + "'"
-			# run query first to grab the topple
+
+			query = "SELECT * FROM Student_Members WHERE SID = " + SID
+
+			try:
+				sid = int(SID)	
+			except TypeError:
+				ErrorMessage = "SID should be an Integer!"
+				print(ErrorMessage) # maybe send the error message to the front end
+				return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						)
+
+			# run query first to grab the tuple
 			with connection.cursor() as cursor:
 				cursor.execute(query)
 				row = cursor.fetchall()
@@ -311,14 +434,10 @@ def deleteNoCascade(request):
 			# pass the topple as result to context
 			result = row
 			
-			query = "Delete from Student_Members Where SID = '" + SID + "'"
+			query = "Delete from Student_Members Where SID = " + SID 
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
-				row = cursor.fetchall()
-			print(row)
-			# Show all the officeEmployees, showing the one deleted isn't there
-			# Show program court reservation
 
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
 			headers = ["MembershipID", "SID"]
@@ -326,7 +445,7 @@ def deleteNoCascade(request):
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result,'headers':headers},
+			context={'result':result,'headers':headers,'isDelete':True},
 			)
 	return HttpResponseRedirect('/tenniscenter/');
 
@@ -336,23 +455,55 @@ def updateNumberOfPeople(request):
 		if test.is_valid():
 			# Form inputs here.
 			numOfPeople = test['numOfPeople'].value()
+			try:
+				numofp = int(numOfPeople)
+			except TypeError:
+				ErrorMessage = "number of people should be an Integer!"
+				print(ErrorMessage)
+				return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						)
+				
+			programTitle = test['programTitle'].value()
 			
-			
-			query = "Delete from Student_Members Where SID = '" + SID +"'"
+			if numOfPeople != "":
+				query1 = "UPDATE Program_taught SET numberOfPeople = " + numOfPeople + " WHERE programTitle = '" + programTitle + "'"
 			# SQL query here
 			with connection.cursor() as cursor:
-				cursor.execute(query)
-				row = cursor.fetchall()
-			print(row)
+				try:
+					cursor.execute(query1)
+				except exception as err:
+					print("Make sure the number of people is greater than or equal to 2")
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
+
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
+			query = "SELECT * from Program_taught"
+			with connection.cursor() as cursor:
+				try:
+					cursor.execute(query)
+					updated_program_taught = cursor.fetchall() # not certain if this is where it belongs but think it is
+				except exception as err: # the error should be smt from sql
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
-
+			
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(SID)]
+			result = updated_program_taught
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Choice1"]
+			headers = ["Program Title", "Number Of People" , "Fee", "Start Date", "End Date", "Instructor SIN"]
 
 			return render(
 			request,

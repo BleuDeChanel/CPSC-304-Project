@@ -21,6 +21,7 @@
 </div>
 <div class="system">
   <h3>Select Query</h3>
+  <p>Select a Customer</p>
 	<form action="/tenniscenter/selection/" method="post">
     {% csrf_token %}
     <table class="form">
@@ -31,6 +32,7 @@
 </div>
 <div class="system">
 	<h3>Join Query</h3>
+	<p>Get customers MemID</p>
 	<form action="/tenniscenter/join/" method="post">
     {% csrf_token %}
     <table class="form">
@@ -41,6 +43,7 @@
 </div>
 <div class="system">
 	<h3>Division Query</h3>
+	<p>All instructors who taught above the minimum fee</p>
 	<form action="/tenniscenter/division/" method="post">
     {% csrf_token %}
     <table class="form">
@@ -51,6 +54,7 @@
 </div>
 <div class="system">
 	<h3>Aggregation Query</h3>
+	<p>Select max, min, avg, count of Membership Plans</p>
 	<form action="/tenniscenter/aggregation/" method="post">
     {% csrf_token %}
     <table class="form">
@@ -61,6 +65,7 @@
 </div>
 <div class="system">
 	<h3>Nested Aggregation Query</h3>
+	<p>Min,Max,Avg or Count of the Private Fees for each instructor. Then choose Max or Min of that.</p>
 	<form action="/tenniscenter/nestedaggregation/" method="post">
     {% csrf_token %}
     <table class="form">
@@ -82,14 +87,28 @@
 </div>
 <div class="system">
 	<h3>Delete Operation on Student Membership</h3>
-	<p> Note ....</p>
-	<form action="/tenniscenter/deletesudentmember/" method="post">
+	<p> Delete using Student Membership</p>
+	<form action="/tenniscenter/deletestudentmember/" method="post">
     {% csrf_token %}
     <table class="form">
     {{ delete_operation.as_table }}
     </table>
     <input type="submit" value="Submit"  />
+<<<<<<< HEAD
     </form>
 </div>
     </div></div>
+=======
+	</form>
+
+	<h3>Update Operation Program</h3>
+	<p>Updating the number of people in a program</p>
+	<form action="/tenniscenter/updateprogramtaught/" method="post">
+    {% csrf_token %}
+    <table class="form">
+    {{ update_number_of_people.as_table }}
+    </table>
+    <input type="submit" value="Submit"  />
+	</form>
+>>>>>>> 4de8a1f0929263dc456f320a745c9e9b550aee5b
 {% endblock %}

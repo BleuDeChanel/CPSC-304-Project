@@ -9,28 +9,40 @@
   </div>
 <div class="system">
 <h1>Query Result</h1>
-
-  {% if result %}
-  <table class="result">
-    {% if headers %}
-      <tr>
-        {% for header in headers %}
-          <td><b>{{ header }}</b></td>
-        {% endfor %}
-      </tr>
+  {% if error %}
+    <h2>Error</h2>
+    <p>{{error}}</p>
+  {% else %}
+    {% if isDelete %}
+      <h2>Deleted Tuples</h2>
+    {% elif isUpdate %}
+      <h2>Updated Tuples</h2>
+    {% else %}
+      <h2>Selected Tuples</h2>
     {% endif %}
 
-    {% for res in result %}
-    <tr>
-      {% for item in res %}
-        <td>{{ item }}</td>
-      {% endfor %}
-    </tr>
-    {% endfor %}
+    {% if result %}
+    <table class="result">
+      {% if headers %}
+        <tr>
+          {% for header in headers %}
+            <td><b>{{ header }}</b></td>
+          {% endfor %}
+        </tr>
+      {% endif %}
 
-  </table>
-  {% else %}
-    <p>There are no results.</p>
+      {% for res in result %}
+      <tr>
+        {% for item in res %}
+          <td>{{ item }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+
+    </table>
+    {% else %}
+      <p>There are no results.</p>
+    {% endif %}
   {% endif %}
 </div>
 </div></div>

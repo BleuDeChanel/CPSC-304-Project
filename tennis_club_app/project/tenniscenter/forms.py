@@ -33,10 +33,10 @@ class DeleteOperationCascade(forms.Form):
 	memIDInput = forms.CharField(label='MemID Selection', max_length=100, required = False)
 
 class DeleteOperation(forms.Form):
-	memIDInput = forms.CharField(label='Mem ID', max_length=100, required = False)
 	sinIDInput = forms.CharField(label='SIN ID', max_length=100, required = False)
 
 class UpdateNumberOfPeople(forms.Form):
-	numOfPeople = forms.CharField(label='Number Of People', max_length=100, required = False)
+	numOfPeople = forms.CharField(label='Number Of People', max_length=100, required = True)
+	programTitle = forms.CharField(label='Program Title to update', max_length=100, required = True)
 
 
