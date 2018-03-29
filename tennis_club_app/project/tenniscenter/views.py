@@ -447,7 +447,7 @@ def deleteCascade(request):
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result,'headers':headers, 'result2':result2, 'headers2':headers2, isDelete:True},
+			context={'result':result,'headers':headers, 'result2':result2, 'headers2':headers2, 'isDelete':True},
 			)
 
 	return HttpResponseRedirect('/tenniscenter/');
