@@ -1,0 +1,25 @@
+We made a tennis center managin application. It will allow employees to manage customers, memberships, court booking and courses offered.
+Customer will be able to check their own information and club membership tier.
+
+
+We adjusted some tables to accomodate for different types and cascade effects:
+
+We added Unique(Student ID) to club memberships to ensure unique student IDs. And updated club memberships to not delete when their tier is deleted.
+
+Changed student memberships to be deleted when their parent club membership is deleted.
+
+Changed Customers to not be deleted when their club memberships are deleted.
+
+Changed Program_court_reservation to not be deleted when the employee who made the reservation is deleted. Also made the reservation be deleted when the program is deleted.
+
+Changed Customer_reserves_court to be deleted when the customer who made the reservation is deleted
+
+Changed Private_course_court_reservation to not be deleted when the employee who made the reservation is deleted. Also made the reservation be deleted when the private course is deleted.
+
+Changed Customer_register_program to be deleted when the customer or the program is deleted.
+
+Changed Customer_register_private to be deleted when the customer or the private course is deleted
+
+
+
+Most of the changes above were due to missed use cases in the original planning. We weren't sure what tables would need to be updated and deleted when the first schema was made. However, after fleshing out the program it became evident we missed some cases.
