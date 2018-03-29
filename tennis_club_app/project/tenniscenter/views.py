@@ -296,7 +296,7 @@ def nestedAggregation(request):
 
 def deleteCascade(request):
 	if request.method == 'POST':
-		test = DeleteOperation(request.POST)
+		test = DeleteOperationCascade(request.POST)
 		if test.is_valid():
 			# Form inputs here.
 			nameInput = test['nameInput'].value()
