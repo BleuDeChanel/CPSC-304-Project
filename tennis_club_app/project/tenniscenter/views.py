@@ -286,11 +286,11 @@ def deleteCascade(request):
 				try:
 					memID = int(memIDInput)	
 				except TypeError:
-    				ErrorMessage = "MembershipID should be an Integer!"
-    				print(ErrorMessage) # maybe send the error message to the front end
-    			delete_query += "phoneNumber = " + memIDInput + ","
+					ErrorMessage = "MembershipID should be an Integer!"
+					print(ErrorMessage) # maybe send the error message to the front end
+				delete_query += "phoneNumber = " + memIDInput + ","
 
-    		if (delete_query[-1:] == ","):
+			if (delete_query[-1:] == ","):
 				delete_query = delete_query[:-1]
 			
 			# if nameInput != "":
@@ -427,7 +427,7 @@ def updateNumberOfPeople(request):
 			programTitle = test['programTitle'].value()
 			
 			if numOfPeople != "":
-			query = "UPDATE Program_taught SET numberOfPeople = " +numOfPeople+ "WHERE program_title = '" +programTitle + "'"
+				query = "UPDATE Program_taught SET numberOfPeople = " +numOfPeople+ "WHERE program_title = '" +programTitle + "'"
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
@@ -435,7 +435,7 @@ def updateNumberOfPeople(request):
 			print(row)
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
-            query = "SELECT * from table Program_taught"
+			query = "SELECT * from table Program_taught"
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
