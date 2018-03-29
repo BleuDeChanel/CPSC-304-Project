@@ -154,6 +154,24 @@ def division(request):
 			# Form inputs here.
 			minFee = test['minFee'].value()
 			
+			try:
+				MF = int(minFee)
+			except exception:
+				ErrorMessage = "minFee should be an Integer!"
+				return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						)
+
+			if int(minFee) < 0:
+				ErrorMessage = "minFee should be non neggative Integer!"
+				return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						)
+
 			# SQL query here
 			query = "SELECT name FROM Instructors I WHERE NOT EXISTS ((SELECT PT.privateTitle FROM Private_taught PT WHERE PT.private_fee > "
 			query += minFee + ") "
@@ -285,7 +303,7 @@ def deleteCascade(request):
 			if memIDInput != "":
 				try:
 					memID = int(memIDInput)	
-				except TypeError:
+				except exception:
 					ErrorMessage = "MembershipID should be an Integer!"
 					print(ErrorMessage) # maybe send the error message to the front end
 					return render(
@@ -410,14 +428,14 @@ def deleteNoCascade(request):
 		test = DeleteOperation(request.POST)
 		if test.is_valid():
 			# Form inputs here.
-			SID = test['SID'].value()
+			SID = test['sinIDInput'].value()
 			print(type(SID))
 
 			query = "SELECT * FROM Student_Members WHERE SID = " + SID
 
 			try:
 				sid = int(SID)	
-			except TypeError:
+			except exception:
 				ErrorMessage = "SID should be an Integer!"
 				print(ErrorMessage) # maybe send the error message to the front end
 				return render(
@@ -457,7 +475,7 @@ def updateNumberOfPeople(request):
 			numOfPeople = test['numOfPeople'].value()
 			try:
 				numofp = int(numOfPeople)
-			except TypeError:
+			except exception:
 				ErrorMessage = "number of people should be an Integer!"
 				print(ErrorMessage)
 				return render(
