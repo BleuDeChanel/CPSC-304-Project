@@ -31,6 +31,8 @@ urlpatterns += [
     path('division/', include('tenniscenter.urls')),
     path('nestedaggregation/', include('tenniscenter.urls')),
     path('deletecascade/', include('tenniscenter.urls')),
+    path('deletesudentmember/', include('tenniscenter.urls')),
+    
     
     
     
