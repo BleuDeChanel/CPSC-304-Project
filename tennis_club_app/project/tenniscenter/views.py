@@ -370,7 +370,15 @@ def deleteCascade(request):
 
 			# select and send it to the front end Then delete
 			with connection.cursor() as cursor:
-				cursor.execute(delete_query)
+				try:
+					cursor.execute(delete_query)
+				except django.db.utils.IntegrityError as err:
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
 			return render(
 			request,
