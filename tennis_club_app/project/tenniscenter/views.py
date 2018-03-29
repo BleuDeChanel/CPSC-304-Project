@@ -270,28 +270,110 @@ def deleteCascade(request):
 			addressInput = test['addressInput'].value()
 			memIDInput = test['memIDInput'].value()
 
-			
-			query = "Delete from Office_Employees Where officesin = '" + officeSin +"'"
 			# SQL query here
-			with connection.cursor() as cursor:
-				cursor.execute(query)
-				row = cursor.fetchall()
-			print(row)
-			# Show all the officeEmployees, showing the one deleted isn't there
-			# Show program court reservation
 
+			delete_query = "DELETE FROM Customers WHERE "
+			
+			if nameInput != "":
+				delete_query += "name = '" + nameInput + "', "
+			if phoneInput != "":
+				delete_query += "phoneNumber = '" + phoneInput + "', "
+			if emailInput != "":
+				delete_query += "emailInput = '" + emailInput + "', "
+			if addressInput != "":
+				delete_query += "addressInput = '" + addressInput + "', "
+			if memIDInput != "":
+				try:
+					memID = int(memIDInput)	
+				except TypeError:
+    				ErrorMessage = "MembershipID should be an Integer!"
+    				print(ErrorMessage) # maybe send the error message to the front end
+    			delete_query += "phoneNumber = " + memIDInput + ","
+
+    		if (delete_query[-1:] == ","):
+				delete_query = delete_query[:-1]
+			
+			# if nameInput != "":
+			# 	cascade_customer_reserves_court += "name, "
+			# if phoneInput != "":
+			# 	cascade_customer_reserves_court += "phoneNumber, "
+			# # For now, only let users delete on the primary keys.
+			# if emailInput != "":
+			# 	cascade_customer_reserves_court += "email, "
+			# if addressInput != "":
+			# 	cascade_customer_reserves_court += "address, "
+			# if memIDInput != "":
+			# 	cascade_customer_reserves_court += "membershipID, "
+
+			# if (cascade_customer_reserves_court[-1:] == ","):
+			# 	delete_query = delete_query[:-1]
+
+			# technically we should make sure both name&PN are matching as the PK is a set.
+			cascade_customers = "SELECT * "
+			cascade_customers += "FROM Customers C WHERE "
+
+			if nameInput != "":
+				cascade_customers += "C.name = '" + nameInput + "', "
+			if phoneInput != "":
+				cascade_customers += "C.phoneNumber = '" + phoneInput + "', "
+
+			# this might change later to find the matching on depending on the user's input on non primary keys
+			cascade_customer_reserves_court = "SELECT * "
+
+			matchingName = nameInput
+			matchingPhoneNumber = phoneInput
+
+			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE "
+
+			if nameInput != "":
+				cascade_customer_reserves_court += "CRC.name = '" + matchingName + "', "
+			if phoneInput != "":
+				cascade_customer_reserves_court += "CRC.phoneNumber = '" + matchingPhoneNumber + "', "
+
+			if (cascade_customer_reserves_court[-1:] == ","):
+				cascade_customer_reserves_court = cascade_customer_reserves_court[:-1]
+
+			with connection.cursor() as cursor:
+				cursor.execute(cascade_customers)
+				deleted_customers = cursor.fetchall()
+
+			with connection.cursor() as cursor:
+				cursor.execute(cascade_customer_reserves_court)
+				deleted_crc = cursor.fetchall()
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(officeSin)]
+			result = deleted_customers
+			result2 = deleted_crc
+
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Choice1"]
+			
+			headers = ["Phone Number", "Name", "Email", "Address", "MembershipID"]
+			headers2 = ["Phone Number", "Name", "Court Number", "Date", "Start Time", "End Time", "Office SIN"]
+
+			# leaving these uncommented just in case for now, but results to be displayed will have all col.
+			# if nameInput != "":
+			# 	headers.append("Name")
+			# if phoneInput != "":
+			# 	headers.append("PhoneNumber")
+			# # For now, only let users delete on the primary keys.
+			# if emailInput != "":
+			# 	headers.append("Email")
+			# if addressInput != "":
+			# 	headers.append("Name")
+			# if memIDInput != "":
+			# 	headers.append("Name")
+
+			# select and send it to the front end Then delete
+			with connection.cursor() as cursor:
+				cursor.execute(delete_query)
 
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result,'headers':headers},
+			context={'result':result,'headers':headers, 'result2':result2, 'headers2':headers2, isDelete:True},
 			)
+
 	return HttpResponseRedirect('/tenniscenter/');
 
 def deleteNoCascade(request):
@@ -326,7 +408,7 @@ def deleteNoCascade(request):
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result,'headers':headers},
+			context={'result':result,'headers':headers,'isDelete':True},
 			)
 	return HttpResponseRedirect('/tenniscenter/');
 

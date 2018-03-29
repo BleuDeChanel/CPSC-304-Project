@@ -29,6 +29,7 @@ CREATE TABLE Club_Memberships (
  FOREIGN KEY (tier) REFERENCES Membership_Plans,
  UNIQUE (SID)
 );
+-- SID is added as foreign key added later
 
 
 INSERT INTO club_memberships(membershipID, tier)
