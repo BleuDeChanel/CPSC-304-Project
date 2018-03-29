@@ -360,12 +360,14 @@ def deleteCascade(request):
 			cascade_customers += "FROM Customers C WHERE "
 
 			if nameInput != "":
-				cascade_customers += "C.name = '" + nameInput + "', "
+				cascade_customers += "C.name = '" + nameInput + "' AND "
 			if phoneInput != "":
-				cascade_customers += "C.phoneNumber = '" + phoneInput + "', "
+				cascade_customers += "C.phoneNumber = '" + phoneInput
 
-			if (cascade_customers[-1:] == ","):
-				cascade_customers = cascade_customers[:-1]
+			if (cascade_customers[-4:] == "AND "):
+				cascade_customers = cascade_customers[:-4]
+
+			print(cascade_customers)
 				
 			# this might change later to find the matching on depending on the user's input on non primary keys
 			cascade_customer_reserves_court = "SELECT * "
