@@ -1,19 +1,25 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+
+<div class="backg"><div class="overbackg">
+
+<div class="systemtitle">
 <h1>The Tennis Center</h1>
 
   <p>Welcome to <em>The Tennis Center</em>, a place to manage your tennis needs.</p>
-
+</div>
+<div class="system">
 <h2>Dynamic content</h2>
 
   <p>The tennis center has the following record counts:</p>
   <ul>
-    <!-- <li><strong>Customers:</strong> {{ num_customers }}</li>
+    <li><strong>Customers:</strong> {{ num_customers }}</li>
     <li><strong>Instructors:</strong> {{ num_instructors }}</li>
-    <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li> -->
+    <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li>
   </ul>
-
+</div>
+<div class="system">
   <h3>Select Query</h3>
   <p>Select a Customer</p>
 	<form action="/tenniscenter/selection/" method="post">
@@ -22,8 +28,9 @@
     {{ select_instructors.as_table }}
     </table>
     <input type="submit" value="Submit"  />
-	</form>
-
+    </form>
+</div>
+<div class="system">
 	<h3>Join Query</h3>
 	<p>Get customers MemID</p>
 	<form action="/tenniscenter/join/" method="post">
@@ -33,7 +40,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Division Query</h3>
 	<p>All instructors who taught above the minimum fee</p>
 	<form action="/tenniscenter/division/" method="post">
@@ -43,7 +51,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Aggregation Query</h3>
 	<p>Select max, min, avg, count of Membership Plans</p>
 	<form action="/tenniscenter/aggregation/" method="post">
@@ -53,7 +62,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Nested Aggregation Query</h3>
 	<p>Min,Max,Avg or Count of the Private Fees for each instructor. Then choose Max or Min of that.</p>
 	<form action="/tenniscenter/nestedaggregation/" method="post">
@@ -63,7 +73,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Cascade Delete Operation on Customer</h3>
 	<p> Note primary key of Customer is Name and Phone#, so to delete a single customer make sure to use those 2. Or you risk deleting multiple customers</p>
 	<form action="/tenniscenter/deletecascade/" method="post">
@@ -73,7 +84,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Delete Operation on Student Membership</h3>
 	<p> Delete using Student Membership</p>
 	<form action="/tenniscenter/deletestudentmember/" method="post">
@@ -82,8 +94,9 @@
     {{ delete_operation.as_table }}
     </table>
     <input type="submit" value="Submit"  />
-	</form>
-
+    </form>
+</div>
+<div class="system">
 	<h3>Update Operation Program</h3>
 	<p>Updating the number of people in a program</p>
 	<form action="/tenniscenter/updateprogramtaught/" method="post">
@@ -93,4 +106,7 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
+
+</div>
+    </div></div>
 {% endblock %}

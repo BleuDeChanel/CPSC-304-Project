@@ -3,9 +3,80 @@
     padding: 0;
     list-style: none;
 }
-table.form>tbody>tr>th {
-	padding-right: 10px;
+
+.backg {
+    background-image: url("action-athlete-ball-342361.jpg");
+    padding: 20px;
+    font-family: Arial;
 }
+
+.overbackg {
+    background-color: #e9e9e9;
+    opacity: 0.97;
+    padding: 20px;
+}
+
+.systemtitle {
+    background-color: #272727;
+    color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.system {
+    background-color: #ffffff;
+    color: #272727;
+    padding-left: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+
+button {
+    margin-top: 20px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+input:hover {
+    background-color: #e6e6e6;
+}
+
+input {
+    display: block;
+    border-radius: 10px;
+    background: #d6d6d6;
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+
+h1, h2, h3 {
+    font-weight: bolder;
+}
+
+table.form>tbody>tr>th {
+    padding-right: 10px;
+    padding-left: 20px;
+}
+
 table.result>tbody>tr>td {
-	padding-right: 10px;
+    padding-right: 10px;
+    padding-left: 20px;
+}
+
+td {
+    padding: 8px;
+}
+
+tr {
+    padding: 5px;
 }

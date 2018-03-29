@@ -1,6 +1,13 @@
 {% extends "base_generic.html" %}
-
 {% block content %}
+<div class="backg"><div class="overbackg">
+
+  <div class="systemtitle">
+  <h1>The Tennis Center</h1>
+  
+    <p>Welcome to <em>The Tennis Center</em>, a place to manage your tennis needs.</p>
+  </div>
+<div class="system">
 <h1>Query Result</h1>
   {% if error %}
     <h2>Error</h2>
@@ -37,5 +44,6 @@
       <p>There are no results.</p>
     {% endif %}
   {% endif %}
-
+</div>
+</div></div>
 {% endblock %}
