@@ -359,24 +359,15 @@ def deleteCascade(request):
 
 			# technically we should make sure both name&PN are matching as the PK is a set.
 			cascade_customers = "SELECT * "
-			cascade_customers += "FROM Customers C WHERE "
-
+			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE (CRC.name, CRC.phoneNumber) = ANY (Select name, phoneNumber from Customers WHERE "
 			if nameInput != "":
 				cascade_customers += "name = '" + nameInput + "' AND "
 			if phoneInput != "":
-<<<<<<< HEAD
-				cascade_customers += "C.phoneNumber = '" + phoneInput + "' AND "
+				cascade_customer_reserves_court += "phoneNumber = '" + phoneInput + "' AND "
 			if emailInput != "":
-				cascade_customers += "C.email = '" + emailInput + "' AND "
+				cascade_customer_reserves_court += "email = '" + emailInput + "' AND "
 			if addressInput != "":
-				cascade_customers += "C.address = '" + addressInput + "' AND "
-=======
-				cascade_customers += "phoneNumber = '" + phoneInput + "' AND "
-			if emailInput != "":
-				cascade_customers += "email = '" + emailInput + "' AND "
-			if addressInput != "":
-				cascade_customers += "address = '" + addressInput + "' AND "
->>>>>>> e73e9b4bad108f8509929ab2bf2e7a7571a725eb
+				cascade_customer_reserves_court += "address = '" + addressInput + "' AND "
 			if memIDInput != "":
 				try:
 					memID = int(memIDInput)	
@@ -386,9 +377,9 @@ def deleteCascade(request):
 					return render(
 						request,
 						'display_results.html',
-						context={'error':ErrorMessage},
+					context={'error':ErrorMessage},
 						) 
-					cascade_customers += "membershipID = " + memIDInput + " AND "
+				cascade_customer_reserves_court += "membershipID = " + memIDInput + " AND "
 
 			if (cascade_customers[-4:] == "AND "):
 				cascade_customers = cascade_customers[:-4]
