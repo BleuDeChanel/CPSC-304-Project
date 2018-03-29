@@ -461,9 +461,18 @@ def updateNumberOfPeople(request):
 			# Show program court reservation
 			query = "SELECT * from Program_taught"
 			with connection.cursor() as cursor:
-				cursor.execute(query)
-				updated_program_taught = cursor.fetchall()
+				try:
+					cursor.execute(query)
+					updated_program_taught = cursor.fetchall()
+				except django.db.utils.IntegrityError as err:
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
+			
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
 			result = updated_program_taught
