@@ -10,6 +10,10 @@ urlpatterns = [
     path('division/', views.division, name='division'),
     path('nestedaggregation/', views.nestedAggregation, name='nestedaggregation'),
     path('deletecascade/', views.deleteCascade, name='deletecascade'),
+    path('deletestudentmember/', views.deleteNoCascade, name='deletestudentmember'),
+    path('updateprogramtaught/', views.updateNumberOfPeople, name='updateprogramtaught'),
+    
+    
     
     
 ]
