@@ -183,6 +183,17 @@ VALUES ('Semi-pro tennis', 2, 500, '2018-03-02', '2018-07-31', '444455555');
 INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
 VALUES ('Professional tennis', 8, 1000, '2018-01-02', '2018-08-31', '555511111');
 
+CREATE TABLE Private_taught (
+ privateTitle char(20), 
+ private_fee decimal(7,2),
+ startDate date,
+ endDate date,
+ insSIN char(9),
+ PRIMARY KEY (privateTitle),
+ FOREIGN KEY (insSIN) REFERENCES Instructors
+);
+-- add tuples for private_taught
+
 create table Program_court_reservation (
 	courtNumber int not null,
  	date date not null,
