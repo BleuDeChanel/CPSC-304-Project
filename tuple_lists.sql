@@ -33,24 +33,19 @@ CREATE TABLE Club_Memberships (
 
 
 INSERT INTO club_memberships(membershipID, tier)
-VALUES (1,1);
+VALUES (1,1,40018153);
 
 INSERT INTO club_memberships(membershipID, tier)
-VALUES (2,2);
+VALUES (2,2,27299163);
 
 INSERT INTO club_memberships(membershipID, tier)
-VALUES (3,3);
+VALUES (3,3,29634145);
 
 INSERT INTO club_memberships(membershipID, tier)
-VALUES (4,4);
+VALUES (4,4,36789148);
 
 INSERT INTO club_memberships(membershipID, tier)
-VALUES (5,5);
-
-
-
-
-
+VALUES (5,5,12308164);
 
 
 CREATE TABLE Student_Members (
@@ -73,6 +68,7 @@ VALUES (3, 29634145);
 INSERT INTO Student_Members(membershipID, SID)
 VALUES (4, 36789148);
 
+# feel like this should go away for the case someone not being a studnet member. BUT added for now.
 INSERT INTO Student_Members(membershipID, SID)
 VALUES (5, 12308164);
 
@@ -92,6 +88,10 @@ CREATE TABLE Customers (
 
 INSERT INTO Customers(phoneNumber, name, email, address, membershipID)
 VALUES ('778-873-1165', 'Jin Min Lee', 'vfvxz@naver.com', '3355 Binning Rd, Vancouver, BC, V6S 0J1', 1);
+
+INSERT INTO Customers(phoneNumber, name, email, address, membershipID)
+VALUES ('778-873-1165', 'Jin Lee', 'vfvxz@naver.com', '3355 Binning Rd, Vancouver, BC, V6S 0J1', 1);
+
 
 INSERT INTO Customers(phoneNumber, name, email, address, membershipID)
 VALUES ('778-886-5715', 'Mark Pawlowski', 'moopok@gmail.com', '2401 Wesbrookmall, Vancouver, BC, V6S 0S2', 2);

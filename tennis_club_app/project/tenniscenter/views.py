@@ -363,6 +363,22 @@ def deleteCascade(request):
 				cascade_customers += "C.name = '" + nameInput + "' AND "
 			if phoneInput != "":
 				cascade_customers += "C.phoneNumber = '" + phoneInput + "' AND "
+			if emailInput != "":
+				cascade_customers += "C.email = '" + emailInput + "' AND "
+			if addressInput != "":
+				cascade_customers += "C.address = '" + addressInput + "' AND "
+			if memIDInput != "":
+				try:
+					memID = int(memIDInput)	
+				except Exception:
+					ErrorMessage = "MembershipID should be an Integer!"
+					print(ErrorMessage) # maybe send the error message to the front end
+					return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						) 
+					cascade_customers += "membershipID = " + memIDInput + " AND "
 
 			if (cascade_customers[-4:] == "AND "):
 				cascade_customers = cascade_customers[:-4]
@@ -376,7 +392,7 @@ def deleteCascade(request):
 			matchingPhoneNumber = phoneInput
 
 			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE "
-
+			
 			if nameInput != "":
 				cascade_customer_reserves_court += "CRC.name = '" + matchingName + "' AND "
 			if phoneInput != "":
