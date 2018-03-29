@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.db import connection
+from django.db.utils import *
 import logging
 
 # Create your views here.
@@ -260,7 +261,7 @@ def nestedAggregation(request):
 
 def deleteCascade(request):
 	if request.method == 'POST':
-		test = DeleteOperationCascade(request.POST)
+		test = DeleteOperation(request.POST)
 		if test.is_valid():
 			# Form inputs here.
 			nameInput = test['nameInput'].value()
@@ -338,12 +339,28 @@ def deleteCascade(request):
 				cascade_customer_reserves_court = cascade_customer_reserves_court[:-1]
 
 			with connection.cursor() as cursor:
-				cursor.execute(cascade_customers)
-				deleted_customers = cursor.fetchall()
+				try:
+					cursor.execute(cascade_customers)
+					deleted_customers = cursor.fetchall()
+				except exception as err:
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
 			with connection.cursor() as cursor:
-				cursor.execute(cascade_customer_reserves_court)
-				deleted_crc = cursor.fetchall()
+				try:
+					cursor.execute(cascade_customer_reserves_court)
+					deleted_crc = cursor.fetchall()
+				except exception as err:
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
@@ -372,7 +389,7 @@ def deleteCascade(request):
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(delete_query)
-				except django.db.utils.IntegrityError as err:
+				except exception as err:
 					print(err)
 					return render(
 						request,
@@ -457,7 +474,7 @@ def updateNumberOfPeople(request):
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(query1)
-				except django.db.utils.IntegrityError as err:
+				except exception as err:
 					print("Make sure the number of people is greater than or equal to 2")
 					print(err)
 					return render(
@@ -473,7 +490,7 @@ def updateNumberOfPeople(request):
 				try:
 					cursor.execute(query)
 					updated_program_taught = cursor.fetchall() # not certain if this is where it belongs but think it is
-				except django.db.utils.IntegrityError as err:
+				except exception as err: # the error should be smt from sql
 					print(err)
 					return render(
 						request,
