@@ -362,7 +362,7 @@ def deleteCascade(request):
 			if nameInput != "":
 				cascade_customers += "C.name = '" + nameInput + "' AND "
 			if phoneInput != "":
-				cascade_customers += "C.phoneNumber = '" + phoneInput
+				cascade_customers += "C.phoneNumber = '" + phoneInput + "'"
 
 			if (cascade_customers[-4:] == "AND "):
 				cascade_customers = cascade_customers[:-4]
