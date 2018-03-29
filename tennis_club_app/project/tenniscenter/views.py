@@ -410,7 +410,7 @@ def deleteNoCascade(request):
 		test = DeleteOperation(request.POST)
 		if test.is_valid():
 			# Form inputs here.
-			SID = test['SID'].value()
+			SID = test['sinIDInput'].value()
 			print(type(SID))
 
 			query = "SELECT * FROM Student_Members WHERE SID = " + SID
