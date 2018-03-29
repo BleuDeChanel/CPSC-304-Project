@@ -452,10 +452,19 @@ def updateNumberOfPeople(request):
 			programTitle = test['programTitle'].value()
 			
 			if numOfPeople != "":
-				query = "UPDATE Program_taught SET numberOfPeople = " +numOfPeople+ " WHERE programTitle = '" +programTitle + "'"
+				query1 = "UPDATE Program_taught SET numberOfPeople = " + numOfPeople + " WHERE programTitle = '" + programTitle + "'"
 			# SQL query here
 			with connection.cursor() as cursor:
-				cursor.execute(query)
+				try:
+					cursor.execute(query1)
+				except django.db.utils.IntegrityError as err:
+					print("Make sure the number of people is greater than or equal to 2")
+					print(err)
+					return render(
+						request,
+						'display_results.html',
+						context={'error':err},
+						)
 
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
@@ -463,7 +472,7 @@ def updateNumberOfPeople(request):
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(query)
-					updated_program_taught = cursor.fetchall()
+					updated_program_taught = cursor.fetchall() # not certain if this is where it belongs but think it is
 				except django.db.utils.IntegrityError as err:
 					print(err)
 					return render(
