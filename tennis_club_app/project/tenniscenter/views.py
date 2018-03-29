@@ -302,7 +302,7 @@ def deleteNoCascade(request):
 			SID = test['SID'].value()
 			print(type(SID))
 			
-			query = "Select from Student_Members Where SID = '" + SID + "'"
+			query = "Select from Student_Members Where SID = " + SID 
 			# run query first to grab the topple
 			with connection.cursor() as cursor:
 				cursor.execute(query)
@@ -311,7 +311,7 @@ def deleteNoCascade(request):
 			# pass the topple as result to context
 			result = row
 			
-			query = "Delete from Student_Members Where SID = '" + SID + "'"
+			query = "Delete from Student_Members Where SID = " + SID 
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
@@ -336,9 +336,16 @@ def updateNumberOfPeople(request):
 		if test.is_valid():
 			# Form inputs here.
 			numOfPeople = test['numOfPeople'].value()
+			try:
+				numofp = int(numOfPeople)
+			except TypeError:
+				ErrorMessage = "number of people should be an integer!"
+				print(ErrorMessage)
+				
+			programTitle = test['programTitle'].value()
 			
-			
-			query = "Delete from Student_Members Where SID = '" + SID +"'"
+			if numOfPeople != "":
+			query = "UPDATE Program_taught SET numberOfPeople = " +numOfPeople+ "WHERE program_title = '" +programTitle + "'"
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
@@ -346,13 +353,18 @@ def updateNumberOfPeople(request):
 			print(row)
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
-
+            query = "SELECT * from table Program_taught"
+			# SQL query here
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(SID)]
+			result = row
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["Choice1"]
+			headers = ["programTitle", "numberOfPeople" , "fee", "startDate", "endDate", "insSIN"]
 
 			return render(
 			request,
