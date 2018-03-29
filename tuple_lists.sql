@@ -26,7 +26,7 @@ CREATE TABLE Club_Memberships (
  tier int NOT NULL,
  SID int,
  PRIMARY KEY (membershipID),
- FOREIGN KEY (tier) REFERENCES Membership_Plans,
+ FOREIGN KEY (tier) REFERENCES Membership_Plans ON UPDATE CASCADE,
  UNIQUE (SID)
 );
 -- SID is added as foreign key added later
@@ -52,7 +52,7 @@ CREATE TABLE Student_Members (
  membershipID int not null,
  SID int not null,
  PRIMARY KEY (membershipID),
- FOREIGN KEY (membershipID) REFERENCES Club_Memberships
+ FOREIGN KEY (membershipID) REFERENCES Club_Memberships ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -82,7 +82,7 @@ CREATE TABLE Customers (
  address char(50),
  membershipID int,
  PRIMARY KEY (phoneNumber, name),
- FOREIGN KEY (membershipID) REFERENCES Club_Memberships ON DELETE CASCADE ON UPDATE CASCADE
+ FOREIGN KEY (membershipID) REFERENCES Club_Memberships ON UPDATE CASCADE
 );
 
 
@@ -183,6 +183,23 @@ VALUES ('Semi-pro tennis', 2, 500, '2018-03-02', '2018-07-31', '444455555');
 INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
 VALUES ('Professional tennis', 8, 1000, '2018-01-02', '2018-08-31', '555511111');
 
+CREATE TABLE Private_taught (
+ privateTitle char(20), 
+ private_fee decimal(7,2),
+ startDate date,
+ endDate date,
+ insSIN char(9),
+ PRIMARY KEY (privateTitle),
+ FOREIGN KEY (insSIN) REFERENCES Instructors
+);
+
+INSERT INTO Private_taught VALUES ('Master Lesson', 1000, '2018-06-20', '2018-07-20', '666666666');
+INSERT INTO Private_taught VALUES ('Amateur Lesson', 299.99, '2018-06-20', '2018-08-20', '777777777');
+INSERT INTO Private_taught VALUES ('Amateur Lesson 2', 499.99, '2018-06-20', '2018-07-20', '555511111');
+INSERT INTO Private_taught VALUES ('Master Lesson 2', 8999.99, '2018-08-20', '2018-09-20', '666666666');
+INSERT INTO Private_taught VALUES ('Master Lesson 3', 10000, '2018-10-20', '2018-11-20', '666666666');
+
+
 create table Program_court_reservation (
 	courtNumber int not null,
  	date date not null,
@@ -209,9 +226,6 @@ VALUES (4, '2018/03/02', '13:00', '15:00', '444444444', 'Semi-pro tennis');
 
 INSERT INTO Program_court_reservation(courtNumber, date, startTime, endTime, officeSIN, programTitle)	
 VALUES (5, '2018/01/02', '14:00', '17:00', '555555555', 'Professional tennis');
-
-
-
 
 
 CREATE TABLE Customer_reserves_court (

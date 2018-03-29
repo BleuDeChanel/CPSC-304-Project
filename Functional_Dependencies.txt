@@ -1,0 +1,92 @@
+Functional dependencies with regards to each table/relation is listed below:
+
+Note that this is a text file, hence bolding and underlining are not options, nevertheless everything is listed.
+Also, note that the FDs cover every table as the schema is in BCNF :)
+
+Membership_Plans(tier, fee)
+tier is the primary key
+FD (primary): tier →  fee
+
+Club_Memberships(membershipID, tier, SID)
+membershipID is the primary key
+SID is a foreign key referencing Student_Members
+tier is a foreign key referencing Membership_Plans
+FD (primary): membershipID → tier, SID
+- Note that while SID is unique, it can be null for differen tupples and hence,
+doesn't qualify as an FD
+
+Student_Members(membershipID, SID)
+membershipID is the primary key
+membershipID is also a foreign key referencing Club_Memberships
+FD (primary): membershipID → SID
+
+Customers(phone#, name, email, address, membershipID)
+phone# and name together define the primary key
+membershipID is a foreign key referencing Club_Memberships
+FD (primary): phone#, name → email, address
+FD (candidate): name, email → phone#, address
+FD (candidate): name, address → phone#, email
+
+Office_Employees(officeSIN, email,phone#,name)
+officeSin is the primary key
+FD (primary): officeSIN → email, phone#, name
+FD (candidate): email, name → phone#, officeSIN
+
+Instructors(insSIN, email,phone#,name)
+insSIN is the primary key
+FD (primary): insSIN → email, phone#, name
+FD (candidate): email, name → insSIN, phone#
+
+Program_taught(programTitle, #ofpeople, fee, startDate, endDate, insSIN)
+programTitle is is the primary key
+insSin is a foreign key referencing Instructors
+FD (primary): programTitle → #ofpeople, fee, StartDate, EndDate, insSIN
+
+Private_taught(privateTitle, private_fee, startDate, endDate, insSIN)
+privateTitle is the primary key
+insSIN is a foreign key referencing Instroctors
+FD (primary): privateTitle → private_fee, StartDate, EndDate, insSIN
+
+Employee_reserves_court(court#, date, startTime, endTime, OfficeSIN) 
+court#, date, startTime define the primary key for this table
+OfficeSin is a foreign key that references Office_Employees
+FD (primary):court#, date, StartTime → EndTime, OfficeSIN
+
+Private_course_court_reservation(privateTitle,court#,date, startTime)
+privateTitle is the primary key
+privateTitle is a foreign key that references Private_Taught
+court#, date, startTime are foreign keys referencing Employee_reserves_court
+FD (primary): privateTitle → court#, date, StartTime
+FD (candidate): court#, date, StartTime → privateTitle
+
+Program_court_reservation(court#,date, startTime,programTitle)
+court#, date, StartTime define the primary key
+court#, date, StartTime are foreign keys referencing Employee_reserves_court
+programTitle is a foreign key that references Program_taught
+FD (primary): court#, date, StartTime → programTitle
+
+Customer_register_private(privateTitle, phone#, name, privateReg#)
+privateReg# is the primary key
+privateTitle references Private_taught
+phone# and name reference Customers
+FD (primary): privateReg# → privateTitle, phone#, name
+FD (candidate): privateTitle → privateReg#, phone#, name
+FD (candidate): phone#, name → privateTitle, privateReg#
+
+Customer_register_program(phone#, name, programReg#, officeSIN)
+programReg# is primary key
+phone# and name cannot be null and are foreign keys referencing Customers
+officeSIN is foreign key referencing Office_Employees (is optional so can be null)
+FD (primary): programReg# → phone#, name, officeSIN
+FD (candidate): phone#, name → programReg#,officeSIN
+
+
+
+
+
+
+
+
+
+
+

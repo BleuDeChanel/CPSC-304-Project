@@ -29,7 +29,7 @@ def index(request):
 	return render(
 		request,
 		'index.html',
-		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery,'delete_operation_cascade':deleteOperationCascade, 'delete_operation': deleteOperation, 'update_number_of_people': updateNumberOfPeople},
+		context={'num_membership_plans':num_membership_plans,'num_instructors':num_instructors,'num_customers':num_customers,'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery,'delete_operation_cascade':deleteOperationCascade, 'delete_operation': deleteOperation, 'update_number_of_people': updateNumberOfPeople},
 	)
 
 def selection(request):
@@ -340,6 +340,8 @@ def deleteCascade(request):
 			if (delete_query[-4:] == "AND "):
 				delete_query = delete_query[:-4]
 
+			print(delete_query)
+
 			# if nameInput != "":
 			# 	cascade_customer_reserves_court += "name, "
 			# if phoneInput != "":
@@ -360,13 +362,21 @@ def deleteCascade(request):
 			cascade_customers += "FROM Customers C WHERE "
 
 			if nameInput != "":
-				cascade_customers += "C.name = '" + nameInput + "' AND "
+				cascade_customers += "name = '" + nameInput + "' AND "
 			if phoneInput != "":
+<<<<<<< HEAD
 				cascade_customers += "C.phoneNumber = '" + phoneInput + "' AND "
 			if emailInput != "":
 				cascade_customers += "C.email = '" + emailInput + "' AND "
 			if addressInput != "":
 				cascade_customers += "C.address = '" + addressInput + "' AND "
+=======
+				cascade_customers += "phoneNumber = '" + phoneInput + "' AND "
+			if emailInput != "":
+				cascade_customers += "email = '" + emailInput + "' AND "
+			if addressInput != "":
+				cascade_customers += "address = '" + addressInput + "' AND "
+>>>>>>> e73e9b4bad108f8509929ab2bf2e7a7571a725eb
 			if memIDInput != "":
 				try:
 					memID = int(memIDInput)	
@@ -391,15 +401,34 @@ def deleteCascade(request):
 			matchingName = nameInput
 			matchingPhoneNumber = phoneInput
 
-			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE "
-			
+			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE (CRC.name, CRC.phoneNumber) = ANY (Select name, phoneNumber from Customers WHERE "
+
 			if nameInput != "":
-				cascade_customer_reserves_court += "CRC.name = '" + matchingName + "' AND "
+				cascade_customer_reserves_court += "name = '" + nameInput + "' AND "
 			if phoneInput != "":
-				cascade_customer_reserves_court += "CRC.phoneNumber = '" + matchingPhoneNumber + "' AND "
+				cascade_customer_reserves_court += "phoneNumber = '" + phoneInput + "' AND "
+			if emailInput != "":
+				cascade_customer_reserves_court += "email = '" + emailInput + "' AND "
+			if addressInput != "":
+				cascade_customer_reserves_court += "address = '" + addressInput + "' AND "
+			if memIDInput != "":
+				try:
+					memID = int(memIDInput)	
+				except Exception:
+					ErrorMessage = "MembershipID should be an Integer!"
+					print(ErrorMessage) # maybe send the error message to the front end
+					return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						) 
+					cascade_customer_reserves_court += "membershipID = " + memIDInput + " AND "
 
 			if (cascade_customer_reserves_court[-4:] == "AND "):
 				cascade_customer_reserves_court = cascade_customer_reserves_court[:-4]
+
+			cascade_customer_reserves_court += ")"
+			print(cascade_customer_reserves_court)
 
 			with connection.cursor() as cursor:
 				try:
@@ -407,6 +436,7 @@ def deleteCascade(request):
 					deleted_customers = cursor.fetchall()
 					print(deleted_customers)
 				except Exception as err:
+					print("cascade customers")
 					print(err)
 					return render(
 						request,
@@ -420,6 +450,7 @@ def deleteCascade(request):
 					deleted_crc = cursor.fetchall()
 					print(deleted_crc)
 				except Exception as err:
+					print("cascade crc")
 					print(err)
 					return render(
 						request,
@@ -476,7 +507,6 @@ def deleteNoCascade(request):
 		if test.is_valid():
 			# Form inputs here.
 			SID = test['sinIDInput'].value()
-			print(type(SID))
 
 			query = "SELECT * FROM Student_Members WHERE SID = " + SID
 
@@ -499,6 +529,7 @@ def deleteNoCascade(request):
 						)
 
 			# run query first to grab the tuple
+			print(query)
 			with connection.cursor() as cursor:
 				cursor.execute(query)
 				row = cursor.fetchall()
@@ -510,7 +541,7 @@ def deleteNoCascade(request):
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
-
+			print(query)
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
 			headers = ["MembershipID", "SID"]
 
@@ -543,6 +574,7 @@ def updateNumberOfPeople(request):
 			if numOfPeople != "":
 				query1 = "UPDATE Program_taught SET numberOfPeople = " + numOfPeople + " WHERE programTitle = '" + programTitle + "'"
 			# SQL query here
+			print(query1)
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(query1)
@@ -558,6 +590,7 @@ def updateNumberOfPeople(request):
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
 			query = "SELECT * from Program_taught"
+			print(query)
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(query)
