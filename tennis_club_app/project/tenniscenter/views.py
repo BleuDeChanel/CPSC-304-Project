@@ -48,6 +48,23 @@ def selection(request):
 			addressInput = test['addressInput'].value()
 			memIDInput = test['memIDInput'].value()
 			
+			if (nameChecked == False) and (phoneChecked == False) and (emailChecked == False) and (addressChecked == False) and (memIDChecked == False):
+				return render(
+						request,
+						'display_results.html',
+						context={'error':"Please select at least one option."},
+						)
+
+			try:
+				mid = int(memIDInput)
+			except Exception:
+				ErrorMessage = "MembershipID should be an Integer!"
+				return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						)
+
 			# SQL query here
 			query = "SELECT "
 			if (nameChecked):
@@ -156,7 +173,7 @@ def division(request):
 			
 			try:
 				MF = int(minFee)
-			except exception:
+			except Exception:
 				ErrorMessage = "minFee should be an Integer!"
 				return render(
 						request,
@@ -288,6 +305,13 @@ def deleteCascade(request):
 			addressInput = test['addressInput'].value()
 			memIDInput = test['memIDInput'].value()
 
+			if (nameInput == "") and (phoneInput == "") and (emailInput == "") and (addressInput == "") and (memIDInput == ""):
+				return render(
+						request,
+						'display_results.html',
+						context={'error':"Nothing was deleted since no inputs were given."},
+						)
+
 			# SQL query here
 
 			delete_query = "DELETE FROM Customers WHERE "
@@ -303,7 +327,7 @@ def deleteCascade(request):
 			if memIDInput != "":
 				try:
 					memID = int(memIDInput)	
-				except exception:
+				except Exception:
 					ErrorMessage = "MembershipID should be an Integer!"
 					print(ErrorMessage) # maybe send the error message to the front end
 					return render(
@@ -360,7 +384,7 @@ def deleteCascade(request):
 				try:
 					cursor.execute(cascade_customers)
 					deleted_customers = cursor.fetchall()
-				except exception as err:
+				except Exception as err:
 					print(err)
 					return render(
 						request,
@@ -372,7 +396,7 @@ def deleteCascade(request):
 				try:
 					cursor.execute(cascade_customer_reserves_court)
 					deleted_crc = cursor.fetchall()
-				except exception as err:
+				except Exception as err:
 					print(err)
 					return render(
 						request,
@@ -407,7 +431,7 @@ def deleteCascade(request):
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(delete_query)
-				except exception as err:
+				except Exception as err:
 					print(err)
 					return render(
 						request,
@@ -433,9 +457,16 @@ def deleteNoCascade(request):
 
 			query = "SELECT * FROM Student_Members WHERE SID = " + SID
 
+			if (nameInput == "") and (phoneInput == "") and (emailInput == "") and (addressInput == "") and (memIDInput == ""):
+				return render(
+						request,
+						'display_results.html',
+						context={'error':"Nothing was deleted since no inputs were given."},
+						)
+				
 			try:
 				sid = int(SID)	
-			except exception:
+			except Exception:
 				ErrorMessage = "SID should be an Integer!"
 				print(ErrorMessage) # maybe send the error message to the front end
 				return render(
@@ -475,7 +506,7 @@ def updateNumberOfPeople(request):
 			numOfPeople = test['numOfPeople'].value()
 			try:
 				numofp = int(numOfPeople)
-			except exception:
+			except Exception:
 				ErrorMessage = "number of people should be an Integer!"
 				print(ErrorMessage)
 				return render(
@@ -492,7 +523,7 @@ def updateNumberOfPeople(request):
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(query1)
-				except exception as err:
+				except Exception as err:
 					print("Make sure the number of people is greater than or equal to 2")
 					print(err)
 					return render(
@@ -508,7 +539,7 @@ def updateNumberOfPeople(request):
 				try:
 					cursor.execute(query)
 					updated_program_taught = cursor.fetchall() # not certain if this is where it belongs but think it is
-				except exception as err: # the error should be smt from sql
+				except Exception as err: # the error should be smt from sql
 					print(err)
 					return render(
 						request,
