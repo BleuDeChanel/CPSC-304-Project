@@ -359,7 +359,7 @@ def deleteCascade(request):
 
 			# technically we should make sure both name&PN are matching as the PK is a set.
 			cascade_customers = "SELECT * "
-			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE (CRC.name, CRC.phoneNumber) = ANY (Select name, phoneNumber from Customers WHERE "
+			cascade_customers += "FROM Customers C WHERE "
 			if nameInput != "":
 				cascade_customers += "name = '" + nameInput + "' AND "
 			if phoneInput != "":
@@ -377,7 +377,7 @@ def deleteCascade(request):
 					return render(
 						request,
 						'display_results.html',
-					context={'error':ErrorMessage},
+						context={'error':ErrorMessage},
 						) 
 				cascade_customer_reserves_court += "membershipID = " + memIDInput + " AND "
 
@@ -413,7 +413,7 @@ def deleteCascade(request):
 						'display_results.html',
 						context={'error':ErrorMessage},
 						) 
-					cascade_customer_reserves_court += "membershipID = " + memIDInput + " AND "
+				cascade_customer_reserves_court += "membershipID = " + memIDInput + " AND "
 
 			if (cascade_customer_reserves_court[-4:] == "AND "):
 				cascade_customer_reserves_court = cascade_customer_reserves_court[:-4]
