@@ -351,4 +351,5 @@ INSERT INTO Customer_register_private(phoneNumber, name, privateTitle, privateRe
 VALUES ('778-886-2413',	'Nadal Rafael', 'Master Lesson 3', 5);
 
 
+
 ---------------------- aboves are inserted

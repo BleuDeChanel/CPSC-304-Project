@@ -288,5 +288,33 @@ def deleteCascade(request):
 			)
 	return HttpResponseRedirect('/tenniscenter/');
 
+def deleteNoCascade(request):
+	if request.method == 'POST':
+		test = DeleteOperationCascade(request.POST)
+		if test.is_valid():
+			# Form inputs here.
+			SID = test['SID'].value()
+			print(type(SID))
+			
+			query = "Delete from Student_Members Where SID = '" + SID +"'"
+			# SQL query here
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
+			# Show all the officeEmployees, showing the one deleted isn't there
+			# Show program court reservation
 
 
+			# Pass array of results in context.
+			# each tuple in the array is a result from the query
+			result = [(SID)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Choice1"]
+
+			return render(
+			request,
+			'display_results.html',
+			context={'result':result,'headers':headers},
+			)
+	return HttpResponseRedirect('/tenniscenter/');
