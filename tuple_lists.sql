@@ -192,7 +192,13 @@ CREATE TABLE Private_taught (
  PRIMARY KEY (privateTitle),
  FOREIGN KEY (insSIN) REFERENCES Instructors
 );
--- add tuples for private_taught
+
+INSERT INTO Private_taught VALUES ('Master Lesson', 1000, '2018-06-20', '2018-07-20', '666666666');
+INSERT INTO Private_taught VALUES ('Amateur Lesson', 299.99, '2018-06-20', '2018-08-20', '777777777');
+INSERT INTO Private_taught VALUES ('Amateur Lesson 2', 499.99, '2018-06-20', '2018-07-20', '555511111');
+INSERT INTO Private_taught VALUES ('Master Lesson 2', 8999.99, '2018-08-20', '2018-09-20', '666666666');
+INSERT INTO Private_taught VALUES ('Master Lesson 3', 10000, '2018-10-20', '2018-11-20', '666666666');
+
 
 create table Program_court_reservation (
 	courtNumber int not null,
