@@ -26,7 +26,7 @@ CREATE TABLE Club_Memberships (
  tier int NOT NULL,
  SID int,
  PRIMARY KEY (membershipID),
- FOREIGN KEY (tier) REFERENCES Membership_Plans,
+ FOREIGN KEY (tier) REFERENCES Membership_Plans ON UPDATE CASCADE,
  UNIQUE (SID)
 );
 -- SID is added as foreign key added later
@@ -57,7 +57,7 @@ CREATE TABLE Student_Members (
  membershipID int not null,
  SID int not null,
  PRIMARY KEY (membershipID),
- FOREIGN KEY (membershipID) REFERENCES Club_Memberships
+ FOREIGN KEY (membershipID) REFERENCES Club_Memberships ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -86,7 +86,7 @@ CREATE TABLE Customers (
  address char(50),
  membershipID int,
  PRIMARY KEY (phoneNumber, name),
- FOREIGN KEY (membershipID) REFERENCES Club_Memberships ON DELETE CASCADE ON UPDATE CASCADE
+ FOREIGN KEY (membershipID) REFERENCES Club_Memberships ON UPDATE CASCADE
 );
 
 

@@ -47,6 +47,13 @@ Delete:
 Delete from Office_Employees
 where name = 'Mike Smith';
 
+
+
+select *
+from Customer_reserves_court crc
+where (crc.name, crc.phoneNumber) = any (select name, phoneNumber from Customers where address = '3355 Binning Rd, Vancouver, BC, V6S 0J1')
+
+
 Update:
 /*
 Alter table Program_taught
