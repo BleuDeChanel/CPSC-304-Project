@@ -1,74 +1,65 @@
 Query Lists
 
 Selection and projection Query
-select * from customers
-select name, phonenumber from customers where membershipID = 1
+	select * from customers
+	select name, phonenumber from customers where membershipID = 1
 
 
 Join Query
-select tier from club_memberships INNER JOIN customers On club_memberships.membershipid = customers.membershipid where customers.name = 'Jin Min Lee'
+	select tier from club_memberships INNER JOIN customers On club_memberships.membershipid = customers.membershipid where customers.name = 'Jin Min Lee'
 
-users input the customer name 
+	users input the customer name 
 
 
 Division Query
-SELECT name FROM Instructors I WHERE NOT EXISTS
- ((SELECT PT.privateTitle 
- FROM Private_taught PT
- WHERE PT.private_fee > 5000)
- EXCEPT
- (SELECT PeT.privateTitle
-FROM Private_taught PeT WHERE PeT.insSIN=I.insSIN))
+	SELECT name FROM Instructors I WHERE NOT EXISTS
+	 ((SELECT PT.privateTitle 
+	 FROM Private_taught PT
+	 WHERE PT.private_fee > 5000)
+	 EXCEPT
+	 (SELECT PeT.privateTitle
+	FROM Private_taught PeT WHERE PeT.insSIN=I.insSIN))
 
-user input the private_fee
-select instructor's name who teaches all private courses with private fee above the given input.	
+	user input the private_fee
+	select instructor's name who teaches all private courses with private fee above the given input.	
 
 
 Aggregation
-select max(fee) from membership_plans
-select count(*) from program_taught P, Instructors I,
-WHERE p.insSIN = i.insSIN AND i.name = 'John'
+	select max(fee) from membership_plans
+	select count(*) from program_taught P, Instructors I,
+	WHERE p.insSIN = i.insSIN AND i.name = 'John'
 
 Nested Aggregation -on the ElephantSQL we need to create the view first
+	AVG is the second param.
+	MAX is the first param.
 
-AVG is the second param.
-MAX is the first param.
+	Create View Tem(insSIN,aggfee) as 
+	   SELECT PT.insSIN, AVG (PT.private_fee) AS aggfee
+	   FROM Private_taught PT
+	   GROUP BY PT.insSIN;
 
-Create View Tem(insSIN,aggfee) as 
-   SELECT PT.insSIN, AVG (PT.private_fee) AS aggfee
-   FROM Private_taught PT
-   GROUP BY PT.insSIN;
-
-Select insSIN,aggfee
-from Tem
-where aggfee =  (SELECT MAX(aggfee) FROM Tem);
-
-Delete: 
-Delete from Office_Employees
-where name = 'Mike Smith';
+	Select insSIN,aggfee
+	from Tem
+	where aggfee =  (SELECT MAX(aggfee) FROM Tem);
 
 
 
-select *
-from Customer_reserves_court crc
-where (crc.name, crc.phoneNumber) = any (select name, phoneNumber from Customers where address = '3355 Binning Rd, Vancouver, BC, V6S 0J1')
+Delete Casecade
+	DELETE FROM Customers WHERE address = '3355 Binning Rd, Vancouver, BC, V6S 0J1'
+
+	To show deletion:
+	SELECT * FROM Customers C WHERE address = '3355 Binning Rd, Vancouver, BC, V6S 0J1'
+	SELECT *
+	FROM Customer_reserves_court crc
+	WHERE (crc.name, crc.phoneNumber) = any (select name, phoneNumber from Customers where address = '3355 Binning Rd, Vancouver, BC, V6S 0J1')
+
+
+Delete No Cascade
+	DELETE from Student_Members Where SID = 9
+	SELECT * FROM Student_Members WHERE SID = 9
 
 
 Update:
-/*
-Alter table Program_taught
-add check (numberOfPeople >= 2);
-*/
+	UPDATE Program_taught SET numberOfPeople = 1 WHERE programTitle = 'lol'
+	SELECT * from Program_taught
 
-//violates constraint 
-INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
-VALUES ('tennis pro', 1, 199.98, '2018-05-01', '2018-06-30', '666666666');
-
-
-//passes constraint 
-INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
-VALUES ('tennis pro', 3, 199.98, '2018-05-01', '2018-06-30', '666666666');
-
-UPDATE Program_taught
-SET numberOfPeople = 
-WHERE program_title = 

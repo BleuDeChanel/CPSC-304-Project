@@ -340,6 +340,8 @@ def deleteCascade(request):
 			if (delete_query[-4:] == "AND "):
 				delete_query = delete_query[:-4]
 
+			print(delete_query)
+
 			# if nameInput != "":
 			# 	cascade_customer_reserves_court += "name, "
 			# if phoneInput != "":
@@ -497,7 +499,6 @@ def deleteNoCascade(request):
 		if test.is_valid():
 			# Form inputs here.
 			SID = test['sinIDInput'].value()
-			print(type(SID))
 
 			query = "SELECT * FROM Student_Members WHERE SID = " + SID
 
@@ -520,6 +521,7 @@ def deleteNoCascade(request):
 						)
 
 			# run query first to grab the tuple
+			print(query)
 			with connection.cursor() as cursor:
 				cursor.execute(query)
 				row = cursor.fetchall()
@@ -531,7 +533,7 @@ def deleteNoCascade(request):
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
-
+			print(query)
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
 			headers = ["MembershipID", "SID"]
 
@@ -564,6 +566,7 @@ def updateNumberOfPeople(request):
 			if numOfPeople != "":
 				query1 = "UPDATE Program_taught SET numberOfPeople = " + numOfPeople + " WHERE programTitle = '" + programTitle + "'"
 			# SQL query here
+			print(query1)
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(query1)
@@ -579,6 +582,7 @@ def updateNumberOfPeople(request):
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
 			query = "SELECT * from Program_taught"
+			print(query)
 			with connection.cursor() as cursor:
 				try:
 					cursor.execute(query)
