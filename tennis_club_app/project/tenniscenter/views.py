@@ -378,12 +378,12 @@ def deleteCascade(request):
 			cascade_customer_reserves_court += "FROM Customer_reserves_court CRC WHERE "
 
 			if nameInput != "":
-				cascade_customer_reserves_court += "CRC.name = '" + matchingName + "', "
+				cascade_customer_reserves_court += "CRC.name = '" + matchingName + "' AND "
 			if phoneInput != "":
-				cascade_customer_reserves_court += "CRC.phoneNumber = '" + matchingPhoneNumber + "', "
+				cascade_customer_reserves_court += "CRC.phoneNumber = '" + matchingPhoneNumber + "'"
 
-			if (cascade_customer_reserves_court[-1:] == ","):
-				cascade_customer_reserves_court = cascade_customer_reserves_court[:-1]
+			if (cascade_customer_reserves_court[-4:] == "AND "):
+				cascade_customer_reserves_court = cascade_customer_reserves_court[:-4]
 
 			with connection.cursor() as cursor:
 				try:
