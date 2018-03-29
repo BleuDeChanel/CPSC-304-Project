@@ -71,10 +71,20 @@
 
 	<h3>Delete Operation on Student Membership</h3>
 	<p> Note ....</p>
-	<form action="/tenniscenter/deletesudentmember/" method="post">
+	<form action="/tenniscenter/deletestudentmember/" method="post">
     {% csrf_token %}
     <table class="form">
     {{ delete_operation.as_table }}
+    </table>
+    <input type="submit" value="Submit"  />
+	</form>
+
+	<h3>Update Operation Program</h3>
+	<p>Updating the number of people in a program</p>
+	<form action="/tenniscenter/updateProgramTaught/" method="post">
+    {% csrf_token %}
+    <table class="form">
+    {{ update_number_of_people.as_table }}
     </table>
     <input type="submit" value="Submit"  />
 	</form>

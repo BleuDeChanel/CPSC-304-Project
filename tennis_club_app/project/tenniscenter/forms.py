@@ -38,5 +38,6 @@ class DeleteOperation(forms.Form):
 
 class UpdateNumberOfPeople(forms.Form):
 	numOfPeople = forms.CharField(label='Number Of People', max_length=100, required = False)
+	programTitle = forms.CharField(label='Program Title to update', max_length=100, required = False)
 
 
