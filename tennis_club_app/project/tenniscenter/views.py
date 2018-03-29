@@ -390,7 +390,7 @@ def deleteCascade(request):
 
 def deleteNoCascade(request):
 	if request.method == 'POST':
-		test = DeleteOperationCascade(request.POST)
+		test = DeleteOperation(request.POST)
 		if test.is_valid():
 			# Form inputs here.
 			SID = test['SID'].value()
