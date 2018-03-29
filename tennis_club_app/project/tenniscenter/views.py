@@ -302,7 +302,7 @@ def deleteNoCascade(request):
 			SID = test['SID'].value()
 			print(type(SID))
 			
-			query = "Delete from Student_Members Where SID = '" + SID +"'"
+			query = "Delete from Student_Members Where SID = " + SID 
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
@@ -333,7 +333,7 @@ def updateNumberOfPeople(request):
 			numOfPeople = test['numOfPeople'].value()
 			
 			
-			query = "Delete from Student_Members Where SID = '" + SID +"'"
+			query = "INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN) VALUES ('tennis pro', " + numOfPeople + ", 199.98, '2018-05-01', '2018-06-30', '666666666');"
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
@@ -345,7 +345,7 @@ def updateNumberOfPeople(request):
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = [(SID)]
+			result = [(numOfPeople)]
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
 			headers = ["Choice1"]
 
