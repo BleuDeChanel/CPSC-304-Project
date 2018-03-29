@@ -31,7 +31,6 @@ def index(request):
 		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery,'delete_operation_cascade':deleteOperationCascade, 'delete_operation': deleteOperation, 'update_number_of_people': updateNumberOfPeople},
 	)
 
-
 def selection(request):
 	# if this is a POST request we need to process the form data
 	if request.method == 'POST':
@@ -279,16 +278,21 @@ def deleteCascade(request):
 			if phoneInput != "":
 				delete_query += "phoneNumber = '" + phoneInput + "', "
 			if emailInput != "":
-				delete_query += "emailInput = '" + emailInput + "', "
+				delete_query += "email = '" + emailInput + "', "
 			if addressInput != "":
-				delete_query += "addressInput = '" + addressInput + "', "
+				delete_query += "address = '" + addressInput + "', "
 			if memIDInput != "":
 				try:
 					memID = int(memIDInput)	
 				except TypeError:
-					ErrorMessage = "MembershipID should be an Integer!"
-					print(ErrorMessage) # maybe send the error message to the front end
-				delete_query += "phoneNumber = " + memIDInput + ","
+    				ErrorMessage = "MembershipID should be an Integer!"
+    				print(ErrorMessage) # maybe send the error message to the front end
+    				return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						) 
+    				delete_query += "membershipID = " + memIDInput + ","
 
 			if (delete_query[-1:] == ","):
 				delete_query = delete_query[:-1]
@@ -383,9 +387,21 @@ def deleteNoCascade(request):
 			# Form inputs here.
 			SID = test['SID'].value()
 			print(type(SID))
-			
-			query = "Select from Student_Members Where SID = " + SID 
-			# run query first to grab the topple
+
+			query = "SELECT * FROM Student_Members WHERE SID = " + SID
+
+			try:
+				sid = int(SID)	
+			except TypeError:
+    			ErrorMessage = "SID should be an Integer!"
+    			print(ErrorMessage) # maybe send the error message to the front end
+    			return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						)
+
+			# run query first to grab the tuple
 			with connection.cursor() as cursor:
 				cursor.execute(query)
 				row = cursor.fetchall()
@@ -397,10 +413,6 @@ def deleteNoCascade(request):
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
-				row = cursor.fetchall()
-			print(row)
-			# Show all the officeEmployees, showing the one deleted isn't there
-			# Show program court reservation
 
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
 			headers = ["MembershipID", "SID"]
@@ -421,32 +433,38 @@ def updateNumberOfPeople(request):
 			try:
 				numofp = int(numOfPeople)
 			except TypeError:
-				ErrorMessage = "number of people should be an integer!"
+				ErrorMessage = "number of people should be an Integer!"
 				print(ErrorMessage)
+				return render(
+						request,
+						'display_results.html',
+						context={'error':ErrorMessage},
+						)
 				
 			programTitle = test['programTitle'].value()
 			
 			if numOfPeople != "":
+<<<<<<< HEAD
 				query = "UPDATE Program_taught SET numberOfPeople = " +numOfPeople+ " WHERE programTitle = '" +programTitle + "'"
+=======
+				query = "UPDATE Program_taught SET numberOfPeople = " + numOfPeople + "WHERE program_title = '" + programTitle + "'"
+>>>>>>> dbf8f6a22def72d8ffa60f1a07f4980284cb6fdb
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
-				row = cursor.fetchall()
-			print(row)
+
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
 			query = "SELECT * from table Program_taught"
-			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
-				row = cursor.fetchall()
-			print(row)
+				updated_program_taught = cursor.fetchall()
 
 			# Pass array of results in context.
 			# each tuple in the array is a result from the query
-			result = row
+			result = updated_program_taught
 			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
-			headers = ["programTitle", "numberOfPeople" , "fee", "startDate", "endDate", "insSIN"]
+			headers = ["Program Title", "Number Of People" , "Fee", "Start Date", "End Date", "Instructor SIN"]
 
 			return render(
 			request,
