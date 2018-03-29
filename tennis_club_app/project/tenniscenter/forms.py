@@ -43,7 +43,7 @@ class DeleteOperation(forms.Form):
 	memIDInput = forms.CharField(label='Mem ID', max_length=100, required = False)
 	sinIDInput = forms.CharField(label='SIN ID', max_length=100, required = False)
 
-# class UpdateOperation(forms.Form):
-# 	memIDInput = forms.CharField(label='MemID', max_length=100, required = False)
+class UpdateNumberOfPeople(forms.Form):
+	numOfPeople = forms.CharField(label='Number Of People', max_length=100, required = False)
 
 

@@ -5,7 +5,7 @@ import logging
 
 # Create your views here.
 from .models import Customers, Instructors, MembershipPlans
-from .forms import SelectInstructors, JoinQuery, AggregationQuery, DivisionQuery, NestedAggregationQuery, DeleteOperationCascade, DeleteOperation
+from .forms import SelectInstructors, JoinQuery, AggregationQuery, DivisionQuery, NestedAggregationQuery, DeleteOperationCascade, DeleteOperation, UpdateNumberOfPeople
 
 def index(request):
 	"""
@@ -23,11 +23,12 @@ def index(request):
 	nestedAggregationQuery = NestedAggregationQuery();
 	deleteOperationCascade = DeleteOperationCascade();
 	deleteOperation = DeleteOperation();
+	updateNumberOfPeople = UpdateNumberOfPeople();
 	# Render the HTML template index.html with the data in the context variable
 	return render(
 		request,
 		'index.html',
-		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery,'delete_operation_cascade':deleteOperationCascade, 'delete_operation': deleteOperation},
+		context={'select_instructors':selectInstructors,'join_query':joinQuery,'aggregation_query':aggregationQuery,'division_query':divisionQuery,'nested_aggregation_query':nestedAggregationQuery,'delete_operation_cascade':deleteOperationCascade, 'delete_operation': deleteOperation, 'update_number_of_people': updateNumberOfPeople},
 	)
 
 
@@ -300,6 +301,37 @@ def deleteNoCascade(request):
 			# Form inputs here.
 			SID = test['SID'].value()
 			print(type(SID))
+			
+			query = "Delete from Student_Members Where SID = '" + SID +"'"
+			# SQL query here
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				row = cursor.fetchall()
+			print(row)
+			# Show all the officeEmployees, showing the one deleted isn't there
+			# Show program court reservation
+
+
+			# Pass array of results in context.
+			# each tuple in the array is a result from the query
+			result = [(SID)]
+			# The headers for the columns (Ensure length of headers is same for the # of items in each tuple of result)
+			headers = ["Choice1"]
+
+			return render(
+			request,
+			'display_results.html',
+			context={'result':result,'headers':headers},
+			)
+	return HttpResponseRedirect('/tenniscenter/');
+
+def updateNumberOfPeople(request):
+	if request.method == 'POST':
+		test = UpdateNumberOfPeople(request.POST)
+		if test.is_valid():
+			# Form inputs here.
+			numOfPeople = test['numOfPeople'].value()
+			
 			
 			query = "Delete from Student_Members Where SID = '" + SID +"'"
 			# SQL query here
