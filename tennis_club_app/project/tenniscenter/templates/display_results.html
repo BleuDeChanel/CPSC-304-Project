@@ -43,6 +43,28 @@
     {% else %}
       <p>There are no results.</p>
     {% endif %}
+
+    {% if result2 %}
+    <table class="result">
+      {% if headers2 %}
+        <tr>
+          {% for header in headers2 %}
+            <td><b>{{ header }}</b></td>
+          {% endfor %}
+        </tr>
+      {% endif %}
+
+      {% for res in result %}
+      <tr>
+        {% for item in res %}
+          <td>{{ item }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+
+    </table>
+    {% endif %}
+
   {% endif %}
 </div>
 </div></div>
