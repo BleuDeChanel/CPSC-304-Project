@@ -560,6 +560,6 @@ def updateNumberOfPeople(request):
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result,'headers':headers},
+			context={'result':result,'headers':headers,'isUpdate':True},
 			)
 	return HttpResponseRedirect('/tenniscenter/');
