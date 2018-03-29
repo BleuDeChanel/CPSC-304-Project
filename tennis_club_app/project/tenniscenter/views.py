@@ -285,14 +285,14 @@ def deleteCascade(request):
 				try:
 					memID = int(memIDInput)	
 				except TypeError:
-    				ErrorMessage = "MembershipID should be an Integer!"
-    				print(ErrorMessage) # maybe send the error message to the front end
-    				return render(
+					ErrorMessage = "MembershipID should be an Integer!"
+					print(ErrorMessage) # maybe send the error message to the front end
+					return render(
 						request,
 						'display_results.html',
 						context={'error':ErrorMessage},
 						) 
-    				delete_query += "membershipID = " + memIDInput + ","
+					delete_query += "membershipID = " + memIDInput + ","
 
 			if (delete_query[-1:] == ","):
 				delete_query = delete_query[:-1]
@@ -393,9 +393,9 @@ def deleteNoCascade(request):
 			try:
 				sid = int(SID)	
 			except TypeError:
-    			ErrorMessage = "SID should be an Integer!"
-    			print(ErrorMessage) # maybe send the error message to the front end
-    			return render(
+				ErrorMessage = "SID should be an Integer!"
+				print(ErrorMessage) # maybe send the error message to the front end
+				return render(
 						request,
 						'display_results.html',
 						context={'error':ErrorMessage},
@@ -451,7 +451,7 @@ def updateNumberOfPeople(request):
 
 			# Show all the officeEmployees, showing the one deleted isn't there
 			# Show program court reservation
-			query = "SELECT * from table Program_taught"
+			query = "SELECT * from Program_taught"
 			with connection.cursor() as cursor:
 				cursor.execute(query)
 				updated_program_taught = cursor.fetchall()
