@@ -296,7 +296,7 @@ def nestedAggregation(request):
 
 def deleteCascade(request):
 	if request.method == 'POST':
-		test = DeleteOperation(request.POST)
+		test = DeleteOperationCascade(request.POST)
 		if test.is_valid():
 			# Form inputs here.
 			nameInput = test['nameInput'].value()
@@ -364,6 +364,9 @@ def deleteCascade(request):
 			if phoneInput != "":
 				cascade_customers += "C.phoneNumber = '" + phoneInput + "', "
 
+			if (cascade_customers[-1:] == ","):
+				cascade_customers = cascade_customers[:-1]
+				
 			# this might change later to find the matching on depending on the user's input on non primary keys
 			cascade_customer_reserves_court = "SELECT * "
 
@@ -463,7 +466,7 @@ def deleteNoCascade(request):
 						'display_results.html',
 						context={'error':"Nothing was deleted since no inputs were given."},
 						)
-				
+
 			try:
 				sid = int(SID)	
 			except Exception:
