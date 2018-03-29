@@ -55,16 +55,17 @@ def selection(request):
 						context={'error':"Please select at least one option."},
 						)
 
-			try:
-				mid = int(memIDInput)
-			except Exception:
-				ErrorMessage = "MembershipID should be an Integer!"
-				return render(
-						request,
-						'display_results.html',
-						context={'error':ErrorMessage},
-						)
-
+			if memIDInput != "":
+				try:
+					mid = int(memIDInput)
+				except Exception:
+					ErrorMessage = "MembershipID should be an Integer!"
+					return render(
+							request,
+							'display_results.html',
+							context={'error':ErrorMessage},
+							)
+			
 			# SQL query here
 			query = "SELECT "
 			if (nameChecked):
@@ -342,24 +343,9 @@ def deleteCascade(request):
 
 			print(delete_query)
 
-			# if nameInput != "":
-			# 	cascade_customer_reserves_court += "name, "
-			# if phoneInput != "":
-			# 	cascade_customer_reserves_court += "phoneNumber, "
-			# # For now, only let users delete on the primary keys.
-			# if emailInput != "":
-			# 	cascade_customer_reserves_court += "email, "
-			# if addressInput != "":
-			# 	cascade_customer_reserves_court += "address, "
-			# if memIDInput != "":
-			# 	cascade_customer_reserves_court += "membershipID, "
-
-			# if (cascade_customer_reserves_court[-1:] == ","):
-			# 	delete_query = delete_query[:-1]
-
 			# technically we should make sure both name&PN are matching as the PK is a set.
 			cascade_customers = "SELECT * "
-			cascade_customers += "FROM Customers C WHERE "
+			cascade_customers += "FROM Customers WHERE "
 			if nameInput != "":
 				cascade_customers += "name = '" + nameInput + "' AND "
 			if phoneInput != "":
@@ -458,19 +444,6 @@ def deleteCascade(request):
 			
 			headers = ["Phone Number", "Name", "Email", "Address", "MembershipID"]
 			headers2 = ["Phone Number", "Name", "Court Number", "Date", "Start Time", "End Time", "Office SIN"]
-
-			# leaving these uncommented just in case for now, but results to be displayed will have all col.
-			# if nameInput != "":
-			# 	headers.append("Name")
-			# if phoneInput != "":
-			# 	headers.append("PhoneNumber")
-			# # For now, only let users delete on the primary keys.
-			# if emailInput != "":
-			# 	headers.append("Email")
-			# if addressInput != "":
-			# 	headers.append("Name")
-			# if memIDInput != "":
-			# 	headers.append("Name")
 
 			# select and send it to the front end Then delete
 			with connection.cursor() as cursor:
