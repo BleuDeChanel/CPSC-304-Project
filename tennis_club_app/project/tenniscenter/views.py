@@ -317,13 +317,13 @@ def deleteCascade(request):
 			delete_query = "DELETE FROM Customers WHERE "
 			
 			if nameInput != "":
-				delete_query += "name = '" + nameInput + "', "
+				delete_query += "name = '" + nameInput + "' AND "
 			if phoneInput != "":
-				delete_query += "phoneNumber = '" + phoneInput + "', "
+				delete_query += "phoneNumber = '" + phoneInput + "' AND "
 			if emailInput != "":
-				delete_query += "email = '" + emailInput + "', "
+				delete_query += "email = '" + emailInput + "' AND "
 			if addressInput != "":
-				delete_query += "address = '" + addressInput + "', "
+				delete_query += "address = '" + addressInput + "' AND "
 			if memIDInput != "":
 				try:
 					memID = int(memIDInput)	
@@ -335,11 +335,11 @@ def deleteCascade(request):
 						'display_results.html',
 						context={'error':ErrorMessage},
 						) 
-					delete_query += "membershipID = " + memIDInput + ","
+					delete_query += "membershipID = " + memIDInput + " AND "
 
-			if (delete_query[-1:] == ","):
-				delete_query = delete_query[:-1]
-			
+			if (delete_query[-4:] == "AND "):
+				delete_query = delete_query[:-4]
+
 			# if nameInput != "":
 			# 	cascade_customer_reserves_court += "name, "
 			# if phoneInput != "":
@@ -362,7 +362,7 @@ def deleteCascade(request):
 			if nameInput != "":
 				cascade_customers += "C.name = '" + nameInput + "' AND "
 			if phoneInput != "":
-				cascade_customers += "C.phoneNumber = '" + phoneInput + "'"
+				cascade_customers += "C.phoneNumber = '" + phoneInput + "' AND "
 
 			if (cascade_customers[-4:] == "AND "):
 				cascade_customers = cascade_customers[:-4]
@@ -380,7 +380,7 @@ def deleteCascade(request):
 			if nameInput != "":
 				cascade_customer_reserves_court += "CRC.name = '" + matchingName + "' AND "
 			if phoneInput != "":
-				cascade_customer_reserves_court += "CRC.phoneNumber = '" + matchingPhoneNumber + "'"
+				cascade_customer_reserves_court += "CRC.phoneNumber = '" + matchingPhoneNumber + "' AND "
 
 			if (cascade_customer_reserves_court[-4:] == "AND "):
 				cascade_customer_reserves_court = cascade_customer_reserves_court[:-4]
