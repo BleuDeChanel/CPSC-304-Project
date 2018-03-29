@@ -389,6 +389,7 @@ def deleteCascade(request):
 				try:
 					cursor.execute(cascade_customers)
 					deleted_customers = cursor.fetchall()
+					print(deleted_customers)
 				except Exception as err:
 					print(err)
 					return render(
@@ -401,6 +402,7 @@ def deleteCascade(request):
 				try:
 					cursor.execute(cascade_customer_reserves_court)
 					deleted_crc = cursor.fetchall()
+					print(deleted_crc)
 				except Exception as err:
 					print(err)
 					return render(
@@ -447,7 +449,7 @@ def deleteCascade(request):
 			return render(
 			request,
 			'display_results.html',
-			context={'result':result,'headers':headers, 'result2':result2, 'headers2':headers2, isDelete:True},
+			context={'result':result,'headers':headers, 'result2':result2, 'headers2':headers2, 'isDelete':True},
 			)
 
 	return HttpResponseRedirect('/tenniscenter/');
@@ -462,7 +464,7 @@ def deleteNoCascade(request):
 
 			query = "SELECT * FROM Student_Members WHERE SID = " + SID
 
-			if (nameInput == "") and (phoneInput == "") and (emailInput == "") and (addressInput == "") and (memIDInput == ""):
+			if (SID == ""):
 				return render(
 						request,
 						'display_results.html',
