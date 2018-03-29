@@ -59,7 +59,8 @@
     <input type="submit" value="Submit"  />
 	</form>
 
-	<h3>Delete Operation</h3>
+	<h3>Cascade Delete Operation on Customer</h3>
+	<p> Note primary key of Customer is Name and Phone#, so to delete a single customer make sure to use those 2. Or you risk deleting multiple customers</p>
 	<form action="/tenniscenter/deletecascade/" method="post">
     {% csrf_token %}
     <table class="form">

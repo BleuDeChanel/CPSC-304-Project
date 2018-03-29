@@ -262,8 +262,12 @@ def deleteCascade(request):
 		test = DeleteOperationCascade(request.POST)
 		if test.is_valid():
 			# Form inputs here.
-			officeSin = test['officeSin'].value()
-			print(type(officeSin))
+			nameInput = test['nameInput'].value()
+			phoneInput = test['phoneInput'].value()
+			emailInput = test['emailInput'].value()
+			addressInput = test['addressInput'].value()
+			memIDInput = test['memIDInput'].value()
+
 			
 			query = "Delete from Office_Employees Where officesin = '" + officeSin +"'"
 			# SQL query here

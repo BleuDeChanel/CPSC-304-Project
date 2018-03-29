@@ -1,31 +1,3 @@
-CREATE TABLE Club_Memberships (
- membershipID int not null,
- tier int NOT NULL,
- SID char(8),
- PRIMARY KEY (membershipID),
- FOREIGN KEY (tier) REFERENCES Membership_Plans,
- FOREIGN KEY (SID) REFERENCES Student_Members ON DELETE CASCADE ON UPDATE CASCADE,
- UNIQUE (SID)
-);
-
-
-INSERT INTO club_memberships(membershipID, tier)
-VALUES (1,1);
-
-INSERT INTO club_memberships(membershipID, tier)
-VALUES (2,2);
-
-INSERT INTO club_memberships(membershipID, tier)
-VALUES (3,3);
-
-INSERT INTO club_memberships(membershipID, tier)
-VALUES (4,4);
-
-INSERT INTO club_memberships(membershipID, tier)
-VALUES (5,5);
-
-
-
 CREATE TABLE Membership_plans (
   tier int,
   fee decimal(7,2),
@@ -49,10 +21,40 @@ INSERT INTO Membership_Plans(tier, fee)
 VALUES (5,100);
 
 
+CREATE TABLE Club_Memberships (
+ membershipID int not null,
+ tier int NOT NULL,
+ SID int,
+ PRIMARY KEY (membershipID),
+ FOREIGN KEY (tier) REFERENCES Membership_Plans,
+ UNIQUE (SID)
+);
+
+
+INSERT INTO club_memberships(membershipID, tier)
+VALUES (1,1);
+
+INSERT INTO club_memberships(membershipID, tier)
+VALUES (2,2);
+
+INSERT INTO club_memberships(membershipID, tier)
+VALUES (3,3);
+
+INSERT INTO club_memberships(membershipID, tier)
+VALUES (4,4);
+
+INSERT INTO club_memberships(membershipID, tier)
+VALUES (5,5);
+
+
+
+
+
+
 
 CREATE TABLE Student_Members (
  membershipID int not null,
- SID char(8) not null,
+ SID int not null,
  PRIMARY KEY (membershipID),
  FOREIGN KEY (membershipID) REFERENCES Club_Memberships
 );
@@ -73,7 +75,8 @@ VALUES (4, 36789148);
 INSERT INTO Student_Members(membershipID, SID)
 VALUES (5, 12308164);
 
-
+alter table Club_Memberships
+ADD FOREIGN KEY (SID) REFERENCES Student_Members ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE TABLE Customers (
  phoneNumber char(12),
@@ -153,7 +156,16 @@ VALUES ('444455555',1112224488,'Mary','peyman@gmail.com');
 INSERT INTO Instructors(insSIN,phoneNumber,name,email)	
 VALUES ('555511111',1112224499,'Sarah','sarah@gmail.com');
 
-
+CREATE TABLE Program_taught (
+  programTitle char(20), 
+  numberOfPeople int,
+  fee decimal(7,2),
+ startDate date,
+  endDate date,
+  insSIN char(9),
+ PRIMARY KEY (programTitle),
+  FOREIGN KEY (insSIN) REFERENCES Instructors
+ );
 
 INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
 VALUES ('Intro to tennis', 100, 199.98, '2018-05-01', '2018-06-30', '666666666');
@@ -169,8 +181,6 @@ VALUES ('Semi-pro tennis', 2, 500, '2018-03-02', '2018-07-31', '444455555');
 
 INSERT INTO Program_taught(programTitle, numberOfPeople , fee, startDate, endDate, insSIN)
 VALUES ('Professional tennis', 8, 1000, '2018-01-02', '2018-08-31', '555511111');
-
-
 
 create table Program_court_reservation (
 	courtNumber int not null,
@@ -200,32 +210,6 @@ INSERT INTO Program_court_reservation(courtNumber, date, startTime, endTime, off
 VALUES (5, '2018/01/02', '14:00', '17:00', '555555555', 'Professional tennis');
 
 
-
-
--- CREATE TABLE Private_taught (
---  privateTitle char(20), 
---  private_fee decimal(7,2),
---  startDate date,
---  endDate date,
---  insSIN char(9),
---  PRIMARY KEY (privateTitle),
---  FOREIGN KEY (insSIN) REFERENCES Instructors
--- );
-
-INSERT INTO Private_taught(privateTitle,private_fee,startDate,endDate,insSIN)
-VALUES ('Master Lesson', 10000, '2018/06/20', '2018/07/20', '666666666');
-
-INSERT INTO Private_taught(privateTitle,private_fee,startDate,endDate,insSIN)
-VALUES ('Amateur Lesson', 299.99, '2018/06/20', '2018/08/20', '777777777');
-
-INSERT INTO Private_taught(privateTitle,private_fee,startDate,endDate,insSIN)
-VALUES ('Amateur Lesson 2', 499.99, '2018/06/20', '2018/07/20', '555511111');
-
-INSERT INTO Private_taught(privateTitle,private_fee,startDate,endDate,insSIN)
-VALUES ('Master Lesson 2', 8999.9, '2018/08/20', '2018/09/20', '666666666');
-
-INSERT INTO Private_taught(privateTitle,private_fee,startDate,endDate,insSIN)
-VALUES ('Master Lesson 3', 10000, '2018/10/20', '2018/11/20', '666666666');
 
 
 
@@ -321,7 +305,6 @@ VALUES ('778-886-2413',	'Nadal Rafael',	'Professional tennis',	5,	'555555555');
 
 
 
--- we don't need officeSIN here, unlike the program register?
 
 CREATE TABLE Customer_register_private (
  phoneNumber char(12) NOT NULL,
@@ -349,7 +332,3 @@ VALUES ('604-883-5678',	'Qiao Zhu', 'Master Lesson 2', 4);
 
 INSERT INTO Customer_register_private(phoneNumber, name, privateTitle, privateRegNumber)
 VALUES ('778-886-2413',	'Nadal Rafael', 'Master Lesson 3', 5);
-
-
-
----------------------- aboves are inserted
