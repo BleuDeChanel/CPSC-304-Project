@@ -294,7 +294,7 @@ def deleteCascade(request):
 						) 
     				delete_query += "membershipID = " + memIDInput + ","
 
-    		if (delete_query[-1:] == ","):
+			if (delete_query[-1:] == ","):
 				delete_query = delete_query[:-1]
 			
 			# if nameInput != "":
@@ -449,6 +449,8 @@ def updateNumberOfPeople(request):
 			with connection.cursor() as cursor:
 				cursor.execute(query)
 
+			# Show all the officeEmployees, showing the one deleted isn't there
+			# Show program court reservation
 			query = "SELECT * from table Program_taught"
 			with connection.cursor() as cursor:
 				cursor.execute(query)
