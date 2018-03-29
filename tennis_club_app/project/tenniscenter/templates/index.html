@@ -1,19 +1,25 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+
+<div class="backg"><div class="overbackg">
+
+<div class="systemtitle">
 <h1>The Tennis Center</h1>
 
   <p>Welcome to <em>The Tennis Center</em>, a place to manage your tennis needs.</p>
-
+</div>
+<div class="system">
 <h2>Dynamic content</h2>
 
   <p>The tennis center has the following record counts:</p>
   <ul>
-    <!-- <li><strong>Customers:</strong> {{ num_customers }}</li>
+    <li><strong>Customers:</strong> {{ num_customers }}</li>
     <li><strong>Instructors:</strong> {{ num_instructors }}</li>
-    <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li> -->
+    <li><strong>Membership Plans:</strong> {{ num_membership_plans }}</li>
   </ul>
-
+</div>
+<div class="system">
   <h3>Select Query</h3>
 	<form action="/tenniscenter/selection/" method="post">
     {% csrf_token %}
@@ -21,8 +27,9 @@
     {{ select_instructors.as_table }}
     </table>
     <input type="submit" value="Submit"  />
-	</form>
-
+    </form>
+</div>
+<div class="system">
 	<h3>Join Query</h3>
 	<form action="/tenniscenter/join/" method="post">
     {% csrf_token %}
@@ -31,7 +38,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Division Query</h3>
 	<form action="/tenniscenter/division/" method="post">
     {% csrf_token %}
@@ -40,7 +48,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Aggregation Query</h3>
 	<form action="/tenniscenter/aggregation/" method="post">
     {% csrf_token %}
@@ -49,7 +58,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Nested Aggregation Query</h3>
 	<form action="/tenniscenter/nestedaggregation/" method="post">
     {% csrf_token %}
@@ -58,7 +68,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Cascade Delete Operation on Customer</h3>
 	<p> Note primary key of Customer is Name and Phone#, so to delete a single customer make sure to use those 2. Or you risk deleting multiple customers</p>
 	<form action="/tenniscenter/deletecascade/" method="post">
@@ -68,7 +79,8 @@
     </table>
     <input type="submit" value="Submit"  />
 	</form>
-
+</div>
+<div class="system">
 	<h3>Delete Operation on Student Membership</h3>
 	<p> Note ....</p>
 	<form action="/tenniscenter/deletesudentmember/" method="post">
@@ -77,5 +89,7 @@
     {{ delete_operation.as_table }}
     </table>
     <input type="submit" value="Submit"  />
-	</form>
+    </form>
+</div>
+    </div></div>
 {% endblock %}
