@@ -444,7 +444,7 @@ def updateNumberOfPeople(request):
 			programTitle = test['programTitle'].value()
 			
 			if numOfPeople != "":
-				query = "UPDATE Program_taught SET numberOfPeople = " + numOfPeople + "WHERE program_title = '" + programTitle + "'"
+				query = "UPDATE Program_taught SET numberOfPeople = " +numOfPeople+ " WHERE programTitle = '" +programTitle + "'"
 			# SQL query here
 			with connection.cursor() as cursor:
 				cursor.execute(query)
