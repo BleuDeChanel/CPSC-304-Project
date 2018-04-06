@@ -89,13 +89,13 @@ def selection(request):
 				if (nameInput):
 					query += "name = '" + nameInput + "' AND "
 				if (phoneInput):
-					query += "name = '" + phoneInput + "' AND "
+					query += "phoneNumber = '" + phoneInput + "' AND "
 				if (emailInput):
-					query += "name = '" + emailInput + "' AND "
+					query += "email = '" + emailInput + "' AND "
 				if (addressInput):
-					query += "name = '" + addressInput + "' AND "
+					query += "address = '" + addressInput + "' AND "
 				if (memIDInput):
-					query += "name = " + memIDInput + " AND "
+					query += "membershipID = " + memIDInput + " AND "
 
 			if (query[-4:] == "AND "):
 				query = query[:-4]
@@ -341,7 +341,7 @@ def deleteCascade(request):
 			if (delete_query[-4:] == "AND "):
 				delete_query = delete_query[:-4]
 
-			print(delete_query)
+			print("delete_query is" + delete_query)
 
 			# technically we should make sure both name&PN are matching as the PK is a set.
 			cascade_customers = "SELECT * "
@@ -349,11 +349,11 @@ def deleteCascade(request):
 			if nameInput != "":
 				cascade_customers += "name = '" + nameInput + "' AND "
 			if phoneInput != "":
-				cascade_customer_reserves_court += "phoneNumber = '" + phoneInput + "' AND "
+				cascade_customers += "phoneNumber = '" + phoneInput + "' AND "
 			if emailInput != "":
-				cascade_customer_reserves_court += "email = '" + emailInput + "' AND "
+				cascade_customers += "email = '" + emailInput + "' AND "
 			if addressInput != "":
-				cascade_customer_reserves_court += "address = '" + addressInput + "' AND "
+				cascade_customers += "address = '" + addressInput + "' AND "
 			if memIDInput != "":
 				try:
 					memID = int(memIDInput)	
